@@ -4,7 +4,7 @@ This tutorial work for laravel 5.x but i'm following 5.4 here.
 
 lets first setup SSO server
 
-#Server
+## Server
 
 Create new laravel project
 
@@ -81,7 +81,7 @@ Your server is ready :)
 
 lets jump to client now.
 
-#Client
+## Client
 
 Create new laravel project
 
@@ -182,7 +182,9 @@ Create MyBroker.php file and paste following code:
 Don't forget to add your server and broker credentials in .ev file:
 
 > SSO_SERVER_URL=http://localhost/server/public/ 
+
 > SSO_CLIENT_ID=12345
+
 > SSO_CLIENT_SECRET=abc123
 
 At this point either you can remove the laravel authentication and use authentication based on response of our server or you can continue to use laravel auth and use SSO both. i will use the second method where i won't touch laravel authentication rather will add new methods to it.
@@ -220,12 +222,12 @@ So let customize laravel login first, copy paste following method into your Logi
 
 by using following line, you have successfully created shared session using SSO. Now we'll create another Client to test everything.
 
-#Client2
+## Client2
 
 Just repeat the steps what we did before for client1.
 don't forget to replace CLIENT_ID and CLIENT_SECRET in .env file
 
-#SSO between client1 & client2
+##SSO between client1 & client2
 
  Do every step for all your clients, i.e. client1 & client2
 
