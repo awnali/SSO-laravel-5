@@ -180,9 +180,10 @@ Create MyBroker.php file and paste following code:
     
     
 Don't forget to add your server and broker credentials in .ev file:
-SSO_SERVER_URL=http://localhost/server/public/
-SSO_CLIENT_ID=12345
-SSO_CLIENT_SECRET=abc123
+
+> SSO_SERVER_URL=http://localhost/server/public/ 
+> SSO_CLIENT_ID=12345
+> SSO_CLIENT_SECRET=abc123
 
 At this point either you can remove the laravel authentication and use authentication based on response of our server or you can continue to use laravel auth and use SSO both. i will use the second method where i won't touch laravel authentication rather will add new methods to it.
 
