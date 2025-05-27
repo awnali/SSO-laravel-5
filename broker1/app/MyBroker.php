@@ -48,13 +48,22 @@ class MyBroker extends Broker
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         list($contentType) = explode(';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
 
+        \Log::info('SSO Request Debug', [
+            'url' => $url,
+            'method' => $method,
+            'command' => $command,
+            'httpCode' => $httpCode,
+            'response' => $response,
+            'contentType' => $contentType
+        ]);
 
         $data = json_decode($response, true);
+        
         if ($httpCode == 403) {
             $this->clearToken();
-            throw new NotAttachedException($data['error'] ?: $response, $httpCode);
+            throw new NotAttachedException(is_array($data) && isset($data['error']) ? $data['error'] : $response, $httpCode);
         }
-        if ($httpCode >= 400) throw new Exception($data['error'] ?: $response, $httpCode);
+        if ($httpCode >= 400) throw new Exception(is_array($data) && isset($data['error']) ? $data['error'] : $response, $httpCode);
 
         return $data;
     }
@@ -63,13 +72,30 @@ class MyBroker extends Broker
             $this->login($username, $password);
         }
         catch(NotAttachedException $e){
+            \Log::error('SSO NotAttachedException: ' . $e->getMessage());
             return false;
         }
         catch(Exception $e){
+            \Log::error('SSO Exception: ' . $e->getMessage());
             return false;
         }
         return true;
     }
+    public function getUserInfo()
+    {
+        try {
+            $result = parent::getUserInfo();
+            \Log::info('getUserInfo result', ['result' => $result]);
+            return $result;
+        } catch (NotAttachedException $e) {
+            \Log::error('getUserInfo NotAttachedException: ' . $e->getMessage());
+            return null;
+        } catch (Exception $e) {
+            \Log::error('getUserInfo Exception: ' . $e->getMessage());
+            return null;
+        }
+    }
+
     public function loginCurrentUser($returnUrl = '/home')
     {
         if ($user = $this->getUserInfo()) {

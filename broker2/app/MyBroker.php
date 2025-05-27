@@ -50,11 +50,12 @@ class MyBroker extends Broker
 
 
         $data = json_decode($response, true);
+        
         if ($httpCode == 403) {
             $this->clearToken();
-            throw new NotAttachedException($data['error'] ?: $response, $httpCode);
+            throw new NotAttachedException(is_array($data) && isset($data['error']) ? $data['error'] : $response, $httpCode);
         }
-        if ($httpCode >= 400) throw new Exception($data['error'] ?: $response, $httpCode);
+        if ($httpCode >= 400) throw new Exception(is_array($data) && isset($data['error']) ? $data['error'] : $response, $httpCode);
 
         return $data;
     }
@@ -70,8 +71,9 @@ class MyBroker extends Broker
         }
         return true;
     }
-    public function loginCurrentUser($returnUrl = '/home'){
-        if($user = $this->getUserInfo()){
+    public function loginCurrentUser($returnUrl = '/home')
+    {
+        if ($user = $this->getUserInfo()) {
             Auth::loginUsingId($user['id']);
             return redirect($returnUrl);
         }

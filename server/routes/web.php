@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\MyServerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/server', [MyServerController::class, 'index']);
-Route::post('/server', [MyServerController::class, 'index']);
+Route::get('/', function () {
+    return view('welcome');
+});

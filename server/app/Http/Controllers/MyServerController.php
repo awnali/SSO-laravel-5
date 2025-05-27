@@ -15,8 +15,9 @@ class MyServerController extends Controller
             echo json_encode(['error' => 'Unknown command']);
             exit();
         }
-        $user = $ssoServer->$command();
-        if($user)
-            return response()->json($user);
+        $ssoServer->$command();
+        
+        // The SSO server methods handle their own output
+        exit();
     }
 }

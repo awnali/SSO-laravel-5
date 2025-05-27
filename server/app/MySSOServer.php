@@ -21,9 +21,8 @@ class MySSOServer extends Server
      * @var array
      */
     private static $brokers = [
-        'Alice' => ['secret'=>'8iwzik1bwd'],
-        'Greg' => ['secret'=>'7pypoox2pc'],
-        'Julias' => ['secret'=>'ceda63kmhp']
+        'broker1' => ['secret'=>'broker1_secret'],
+        'broker2' => ['secret'=>'broker2_secret']
     ];
 
     /**
@@ -46,6 +45,8 @@ class MySSOServer extends Server
      */
     protected function authenticate($username, $password)
     {
+        \Log::info('authenticate called', ['username' => $username, 'password' => '***']);
+        
         if (!isset($username)) {
             return ValidationResult::error("username isn't set");
         }
@@ -55,8 +56,10 @@ class MySSOServer extends Server
         }
 
         if(Auth::attempt(['email' => $username, 'password' => $password])){
+            \Log::info('authenticate success', ['username' => $username]);
             return ValidationResult::success();
         }
+        \Log::info('authenticate failed', ['username' => $username]);
         return ValidationResult::error("can't find user");
 
     }
@@ -69,9 +72,11 @@ class MySSOServer extends Server
      */
     protected function getUserInfo($username)
     {
+        \Log::info('getUserInfo called', ['username' => $username]);
         $user = User::where('email',$username)->first();
+        \Log::info('getUserInfo user found', ['user' => $user ? $user->toArray() : null]);
 
-        return $user ? $user : null;
+        return $user ? $user->toArray() : null;
     }
     public function getUserById($id){
         return User::findOrFail($id);

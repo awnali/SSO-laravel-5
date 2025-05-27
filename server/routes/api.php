@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\MyServerController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// SSO Server endpoints (no CSRF protection needed)
+Route::get('/server', [MyServerController::class, 'index']);
+Route::post('/server', [MyServerController::class, 'index']);
