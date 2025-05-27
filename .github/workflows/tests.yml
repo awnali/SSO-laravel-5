@@ -44,7 +44,12 @@ jobs:
         cd server
         composer install --prefer-dist --no-progress
         cp .env.example .env
+        # Configure for SQLite testing
+        sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
+        sed -i 's/DB_DATABASE=homestead/DB_DATABASE=database\/database.sqlite/' .env
+        echo "DB_FOREIGN_KEYS=true" >> .env
         php artisan key:generate
+        mkdir -p database
         touch database/database.sqlite
         php artisan migrate --force
         
@@ -53,7 +58,12 @@ jobs:
         cd broker1
         composer install --prefer-dist --no-progress
         cp .env.example .env
+        # Configure for SQLite testing
+        sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
+        sed -i 's/DB_DATABASE=homestead/DB_DATABASE=database\/database.sqlite/' .env
+        echo "DB_FOREIGN_KEYS=true" >> .env
         php artisan key:generate
+        mkdir -p database
         touch database/database.sqlite
         php artisan migrate --force
         
@@ -62,18 +72,29 @@ jobs:
         cd broker2
         composer install --prefer-dist --no-progress
         cp .env.example .env
+        # Configure for SQLite testing
+        sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
+        sed -i 's/DB_DATABASE=homestead/DB_DATABASE=database\/database.sqlite/' .env
+        echo "DB_FOREIGN_KEYS=true" >> .env
         php artisan key:generate
+        mkdir -p database
         touch database/database.sqlite
         php artisan migrate --force
         
     - name: Run Unit Tests
       run: |
+        echo "Running Unit Tests for Server..."
         cd server && vendor/bin/phpunit --testsuite=Unit
+        echo "Running Unit Tests for Broker1..."
         cd ../broker1 && vendor/bin/phpunit --testsuite=Unit
+        echo "Running Unit Tests for Broker2..."
         cd ../broker2 && vendor/bin/phpunit --testsuite=Unit
         
     - name: Run Feature Tests
       run: |
+        echo "Running Feature Tests for Server..."
         cd server && vendor/bin/phpunit --testsuite=Feature
+        echo "Running Feature Tests for Broker1..."
         cd ../broker1 && vendor/bin/phpunit --testsuite=Feature
+        echo "Running Feature Tests for Broker2..."
         cd ../broker2 && vendor/bin/phpunit --testsuite=Feature
