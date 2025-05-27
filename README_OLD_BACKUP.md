@@ -98,27 +98,42 @@ This SSO implementation consists of:
 └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-## 🚀 Quick Start
+## 🛠️ Quick Start
 
-### 📦 **Installation**
+### 1. Clone the Repository
 
 ```bash
-# Clone the repository
-git clone https://github.com/awnali/SSO-laravel-5.git laravel-sso
-cd laravel-sso
-
-# Install dependencies for all applications
-composer install
-cd server && composer install && cp .env.example .env && php artisan key:generate && cd ..
-cd broker1 && composer install && cp .env.example .env && php artisan key:generate && cd ..
-cd broker2 && composer install && cp .env.example .env && php artisan key:generate && cd ..
+git clone https://github.com/awnali/SSO-laravel-5.git
+cd SSO-laravel-5
 ```
 
-### ⚙️ **Configuration**
+### 2. Install Dependencies
 
-Configure environment variables for each application:
+Install dependencies for all applications:
 
-**SSO Server (.env)**:
+```bash
+# Server
+cd server
+composer install
+cp .env.example .env
+php artisan key:generate
+
+# Broker1
+cd ../broker1
+composer install
+cp .env.example .env
+php artisan key:generate
+
+# Broker2
+cd ../broker2
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+### 3. Configure Environment
+
+#### SSO Server (.env)
 ```env
 APP_NAME="SSO Server"
 APP_URL=http://localhost:8000
@@ -126,37 +141,60 @@ DB_CONNECTION=sqlite
 DB_DATABASE=/absolute/path/to/server/database/database.sqlite
 ```
 
-**Broker1 (.env)**:
+#### Broker1 (.env)
 ```env
 APP_NAME="Broker1"
 APP_URL=http://localhost:8001
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/broker1/database/database.sqlite
+
+# SSO Configuration
 SSO_SERVER_URL=http://localhost:8000/api/server
 SSO_BROKER_ID=broker1
 SSO_BROKER_SECRET=broker1_secret
 ```
 
-**Broker2 (.env)**:
+#### Broker2 (.env)
 ```env
 APP_NAME="Broker2"
 APP_URL=http://localhost:8002
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/broker2/database/database.sqlite
+
+# SSO Configuration
 SSO_SERVER_URL=http://localhost:8000/api/server
 SSO_BROKER_ID=broker2
 SSO_BROKER_SECRET=broker2_secret
 ```
 
-### 🗄️ **Database Setup**
+### 4. Setup Databases
+
+Create SQLite databases and run migrations:
 
 ```bash
-# Create databases and run migrations
-cd server && touch database/database.sqlite && php artisan migrate && cd ..
-cd broker1 && touch database/database.sqlite && php artisan migrate && cd ..
-cd broker2 && touch database/database.sqlite && php artisan migrate && cd ..
+# Server
+cd server
+touch database/database.sqlite
+php artisan migrate
+
+# Broker1
+cd ../broker1
+touch database/database.sqlite
+php artisan migrate
+
+# Broker2
+cd ../broker2
+touch database/database.sqlite
+php artisan migrate
 ```
 
-### 👤 **Create Test User**
+### 5. Create Test User
+
+Add a test user to the SSO server:
 
 ```bash
-cd server && php artisan tinker
+cd server
+php artisan tinker
 ```
 
 ```php
@@ -169,61 +207,123 @@ User::create([
 exit
 ```
 
-### 🚀 **Start Applications**
+### 6. Start Applications
+
+Start all three applications in separate terminals:
 
 ```bash
 # Terminal 1 - SSO Server
-cd server && php artisan serve --host=0.0.0.0 --port=8000
+cd server
+php artisan serve --host=0.0.0.0 --port=8000
 
 # Terminal 2 - Broker1
-cd broker1 && php artisan serve --host=0.0.0.0 --port=8001
+cd broker1
+php artisan serve --host=0.0.0.0 --port=8001
 
 # Terminal 3 - Broker2
-cd broker2 && php artisan serve --host=0.0.0.0 --port=8002
+cd broker2
+php artisan serve --host=0.0.0.0 --port=8002
 ```
 
 ## 🧪 Testing
 
-### 🤖 **Automated Test Suite**
+### Automated Test Suite
 
-Run the comprehensive test suite covering all SSO functionality:
+This project includes a comprehensive test suite covering all SSO functionality:
 
+#### Running All Tests
 ```bash
-# Run all tests
+# Run the complete test suite
 ./run-tests.sh
 
-# Run specific test types
+# Or run specific test types
 ./run-tests.sh unit      # Unit tests only
 ./run-tests.sh feature   # Feature tests only
-./run-tests.sh integration # Integration tests only
+./run-tests.sh integration # Integration tests only (requires all apps running)
 ```
 
-### ✅ **Test Coverage**
+#### Test Coverage
 
-- **Unit Tests**: 30 tests covering SSO Server and Broker functionality
-- **Feature Tests**: HTTP endpoints, authentication flows, middleware protection
-- **Integration Tests**: 7 end-to-end tests with 28 assertions
+**Unit Tests:**
+- **SSO Server**: Broker validation, authentication, session management, token generation
+- **Broker**: Initialization, configuration, getUserInfo, login functionality
 
-### 🔍 **Manual Testing**
+**Feature Tests:**
+- **Server API endpoints**: attach, login, userInfo, logout, multi-broker sessions
+- **Broker authentication**: login/logout flows, auto-login, validation, middleware
 
-1. **Login Flow**: Visit `http://localhost:8001/login` → Login with `test@example.com` / `password`
-2. **Auto-Login**: Open `http://localhost:8002/home` → Should auto-login
-3. **Centralized Logout**: Logout from either broker → Both should require re-login
+**Integration Tests:**
+- **Complete SSO flow**: End-to-end testing across all applications
+- **Reverse flow testing**: Authentication from different brokers
+- **Invalid credentials**: Error handling and security validation
+- **Session isolation**: Multi-broker session management
 
-## 📚 Documentation
+#### Manual Testing
 
-### 📖 **Complete Documentation**
-- **[Quick Start Guide](docs/installation/quick-start.md)**: Get up and running in 10 minutes
-- **[API Documentation](docs/api/endpoints.md)**: Complete API reference
-- **[Configuration Guide](docs/configuration/advanced.md)**: Advanced configuration options
-- **[Security Guide](SECURITY.md)**: Security best practices and policies
-- **[Contributing Guide](CONTRIBUTING.md)**: How to contribute to the project
+### 1. Test Login Flow
+1. Visit `http://localhost:8001/login` (Broker1)
+2. Login with: `test@example.com` / `password`
+3. You should be redirected to the dashboard
 
-### 🔧 **Advanced Topics**
-- **[Adding More Brokers](docs/examples/adding-brokers.md)**: Scale to multiple applications
-- **[Production Deployment](docs/deployment/production.md)**: Deploy to production environments
-- **[Troubleshooting](docs/troubleshooting/common-issues.md)**: Common issues and solutions
-- **[Performance Optimization](docs/performance/optimization.md)**: Optimize for high traffic
+### 2. Test Auto-Login
+1. Open a new tab and visit `http://localhost:8002/home` (Broker2)
+2. You should be automatically logged in without entering credentials
+3. The same user should appear in the navigation
+
+### 3. Test Logout
+1. Logout from either Broker1 or Broker2
+2. Try accessing `http://localhost:8001/home` or `http://localhost:8002/home`
+3. You should be redirected to login on both applications
+
+## 🔧 Configuration Details
+
+### SSO Server Configuration
+
+The SSO server is configured in `server/app/MySSOServer.php` with broker credentials:
+
+```php
+protected $brokers = [
+    'broker1' => ['secret' => 'broker1_secret'],
+    'broker2' => ['secret' => 'broker2_secret'],
+];
+```
+
+### Broker Configuration
+
+Each broker uses the `MyBroker` class to communicate with the SSO server. The configuration is loaded from environment variables.
+
+## 📁 Project Structure
+
+```
+SSO-laravel-12/
+├── server/          # SSO Server application
+│   ├── app/
+│   │   ├── MySSOServer.php
+│   │   └── Http/Controllers/MyServerController.php
+│   ├── tests/
+│   │   ├── Unit/MySSOServerTest.php
+│   │   └── Feature/SSOServerControllerTest.php
+│   └── routes/api.php
+├── broker1/         # First broker application
+│   ├── app/
+│   │   ├── MyBroker.php
+│   │   └── Http/Controllers/Auth/LoginController.php
+│   ├── tests/
+│   │   ├── Unit/MyBrokerTest.php
+│   │   └── Feature/SSOAuthenticationTest.php
+│   └── routes/web.php
+├── broker2/         # Second broker application
+│   ├── app/
+│   │   ├── MyBroker.php
+│   │   └── Http/Controllers/Auth/LoginController.php
+│   ├── tests/
+│   │   ├── Unit/MyBrokerTest.php
+│   │   └── Feature/SSOAuthenticationTest.php
+│   └── routes/web.php
+├── tests/
+│   └── Integration/SSOIntegrationTest.php  # End-to-end tests
+└── run-tests.sh     # Automated test runner
+```
 
 ## 🔍 How It Works
 
@@ -233,64 +333,36 @@ Run the comprehensive test suite covering all SSO functionality:
 4. **Auto-Login**: When visiting other brokers, they check with the SSO server for existing authentication
 5. **Centralized Logout**: Logout requests are sent to the SSO server, invalidating the shared session
 
-## 📁 Project Structure
+## 🐛 Troubleshooting
 
-```
-laravel-sso/
-├── server/                    # SSO Server application
-│   ├── app/MySSOServer.php   # Core SSO server logic
-│   ├── app/Http/Controllers/MyServerController.php
-│   ├── tests/Unit/           # Unit tests
-│   ├── tests/Feature/        # Feature tests
-│   └── routes/api.php        # API endpoints
-├── broker1/                  # First broker application
-│   ├── app/MyBroker.php     # Broker client logic
-│   ├── app/Http/Controllers/Auth/LoginController.php
-│   ├── tests/Unit/          # Unit tests
-│   ├── tests/Feature/       # Feature tests
-│   └── routes/web.php       # Web routes
-├── broker2/                 # Second broker application
-│   └── [same structure as broker1]
-├── tests/Integration/       # End-to-end integration tests
-├── docs/                    # Comprehensive documentation
-├── .github/                 # GitHub templates and workflows
-└── run-tests.sh            # Automated test runner
-```
+### Common Issues
 
-## 🛡️ Security Features
+1. **CSRF Token Errors**: SSO endpoints are in `routes/api.php` to bypass CSRF protection
+2. **Database Connection**: Ensure SQLite files exist and have proper permissions
+3. **Port Conflicts**: Make sure ports 8000, 8001, and 8002 are available
+4. **Environment Variables**: Double-check SSO configuration in `.env` files
 
-- **🔐 Token-based Authentication**: Secure session tokens with cryptographic signatures
-- **🛡️ CSRF Protection**: Cross-site request forgery protection
-- **🔒 Session Isolation**: Isolated sessions between different brokers
-- **⏰ Automatic Expiration**: Configurable session timeouts
-- **🔑 Secure Password Hashing**: Bcrypt with configurable cost factor
-- **🌐 HTTPS Support**: SSL/TLS encryption for production environments
+### Debug Mode
 
-## 🚀 Performance & Scalability
+Enable debug logging in `MyBroker.php` by uncommenting the debug lines to see detailed request/response information.
 
-- **⚡ Optimized Queries**: Efficient database queries with proper indexing
-- **🗄️ Caching Support**: Redis/Memcached integration for session storage
-- **📊 Load Balancer Ready**: Stateless design for horizontal scaling
-- **🔄 Connection Pooling**: Efficient database connection management
-- **📈 Monitoring Ready**: Built-in logging and monitoring capabilities
+## 📝 Adding More Brokers
 
-## 🌍 SEO & Discoverability
+To add additional broker applications:
 
-### 🔍 **Keywords**
-Laravel SSO, Single Sign-On Laravel, Laravel 12 Authentication, PHP SSO, Multi-Application Authentication, Laravel Security, Enterprise SSO, Microservices Authentication, Laravel Session Management, SSO Implementation
-
-### 🏷️ **Tags**
-`laravel` `sso` `single-sign-on` `authentication` `php` `security` `microservices` `enterprise` `session-management` `api` `oauth` `saml` `identity-management` `access-control` `laravel-12`
+1. Create a new Laravel application
+2. Install the jasny/sso package: `composer require jasny/sso:^0.2.3`
+3. Copy the `MyBroker.php` and `LoginController.php` from an existing broker
+4. Add the new broker to the SSO server's broker list
+5. Configure the `.env` file with unique broker ID and secret
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
-
-- 🐛 **Bug Reports**: How to report issues
-- 💡 **Feature Requests**: Suggesting new features
-- 🔧 **Pull Requests**: Contributing code
-- 📝 **Documentation**: Improving documentation
-- 🧪 **Testing**: Adding tests
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ## 📄 License
 
@@ -298,20 +370,6 @@ This project is open-sourced software licensed under the [MIT license](LICENSE).
 
 ## 🙏 Acknowledgments
 
-- **Laravel Framework**: Built with the amazing [Laravel](https://laravel.com/) framework
-- **jasny/sso**: Powered by the [jasny/sso](https://github.com/jasny/sso) package
-- **Community**: Thanks to all contributors and the Laravel community
-
-## 📞 Support & Community
-
-- **📖 Documentation**: Comprehensive guides and API reference
-- **🐛 Issues**: [GitHub Issues](https://github.com/awnali/SSO-laravel-5/issues) for bug reports
-- **💬 Discussions**: [GitHub Discussions](https://github.com/awnali/SSO-laravel-5/discussions) for questions
-- **🔒 Security**: Email security@example.com for security issues
-- **⭐ Star**: Star this repository if you find it useful!
-
----
-
-**Ready to implement enterprise-grade SSO?** [Get started now](docs/installation/quick-start.md) and have your multi-application authentication system running in minutes!
-
-**Keywords**: Laravel 12 SSO, Single Sign-On, PHP Authentication, Enterprise Security, Microservices, Multi-Application Login, Session Management, API Authentication, Laravel Security, SSO Implementation
+- Built with [Laravel](https://laravel.com/)
+- Uses [jasny/sso](https://github.com/jasny/sso) package for SSO functionality
+- Upgraded to Laravel 12 for modern PHP compatibility

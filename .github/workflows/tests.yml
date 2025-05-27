@@ -1,0 +1,79 @@
+name: SSO Laravel 12 Tests
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php-version: [8.2, 8.3]
+        
+    name: PHP ${{ matrix.php-version }} Tests
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+        coverage: none
+        
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+          
+    - name: Install dependencies
+      run: |
+        composer install --prefer-dist --no-progress
+        
+    - name: Install Server dependencies
+      run: |
+        cd server
+        composer install --prefer-dist --no-progress
+        cp .env.example .env
+        php artisan key:generate
+        touch database/database.sqlite
+        php artisan migrate --force
+        
+    - name: Install Broker1 dependencies
+      run: |
+        cd broker1
+        composer install --prefer-dist --no-progress
+        cp .env.example .env
+        php artisan key:generate
+        touch database/database.sqlite
+        php artisan migrate --force
+        
+    - name: Install Broker2 dependencies
+      run: |
+        cd broker2
+        composer install --prefer-dist --no-progress
+        cp .env.example .env
+        php artisan key:generate
+        touch database/database.sqlite
+        php artisan migrate --force
+        
+    - name: Run Unit Tests
+      run: |
+        cd server && vendor/bin/phpunit --testsuite=Unit
+        cd ../broker1 && vendor/bin/phpunit --testsuite=Unit
+        cd ../broker2 && vendor/bin/phpunit --testsuite=Unit
+        
+    - name: Run Feature Tests
+      run: |
+        cd server && vendor/bin/phpunit --testsuite=Feature
+        cd ../broker1 && vendor/bin/phpunit --testsuite=Feature
+        cd ../broker2 && vendor/bin/phpunit --testsuite=Feature

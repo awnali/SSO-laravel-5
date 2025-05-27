@@ -1,0 +1,49 @@
+User-agent: *
+Allow: /
+
+# Allow crawling of documentation
+Allow: /docs/
+Allow: /README.md
+Allow: /CONTRIBUTING.md
+Allow: /SECURITY.md
+Allow: /CHANGELOG.md
+Allow: /CONTRIBUTORS.md
+Allow: /LICENSE
+
+# Disallow crawling of sensitive directories
+Disallow: /vendor/
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /storage/
+Disallow: /bootstrap/cache/
+Disallow: /.env
+Disallow: /.env.example
+Disallow: /composer.lock
+Disallow: /package-lock.json
+Disallow: /yarn.lock
+
+# Disallow crawling of log files
+Disallow: /*.log
+Disallow: /server/storage/logs/
+Disallow: /broker1/storage/logs/
+Disallow: /broker2/storage/logs/
+
+# Disallow crawling of database files
+Disallow: /*.sqlite
+Disallow: /database/
+Disallow: /server/database/
+Disallow: /broker1/database/
+Disallow: /broker2/database/
+
+# Allow crawling of test files for documentation purposes
+Allow: /tests/
+Allow: /server/tests/
+Allow: /broker1/tests/
+Allow: /broker2/tests/
+
+# Sitemap location
+Sitemap: https://github.com/awnali/SSO-laravel-5/blob/master/sitemap.xml
+
+# Crawl delay (be respectful)
+Crawl-delay: 1

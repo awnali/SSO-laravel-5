@@ -1,0 +1,76 @@
+{
+  "name": "laravel-12-sso",
+  "version": "12.0.0",
+  "description": "Enterprise-grade Single Sign-On (SSO) solution built with Laravel 12 for multi-application authentication",
+  "keywords": [
+    "laravel",
+    "sso",
+    "single-sign-on",
+    "authentication",
+    "php",
+    "security",
+    "microservices",
+    "enterprise",
+    "session-management",
+    "api",
+    "oauth",
+    "identity-management",
+    "access-control",
+    "laravel-12",
+    "multi-application",
+    "centralized-auth",
+    "token-based-auth",
+    "distributed-systems"
+  ],
+  "homepage": "https://github.com/awnali/SSO-laravel-5",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awnali/SSO-laravel-5.git"
+  },
+  "bugs": {
+    "url": "https://github.com/awnali/SSO-laravel-5/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Laravel SSO Contributors",
+    "email": "contributors@example.com"
+  },
+  "contributors": [
+    {
+      "name": "OpenHands AI",
+      "email": "openhands@all-hands.dev"
+    }
+  ],
+  "engines": {
+    "php": ">=8.2",
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "test": "./run-tests.sh all",
+    "test:unit": "./run-tests.sh unit",
+    "test:feature": "./run-tests.sh feature",
+    "test:integration": "./run-tests.sh integration",
+    "start:server": "cd server && php artisan serve --host=0.0.0.0 --port=8000",
+    "start:broker1": "cd broker1 && php artisan serve --host=0.0.0.0 --port=8001",
+    "start:broker2": "cd broker2 && php artisan serve --host=0.0.0.0 --port=8002",
+    "setup": "composer install && cd server && composer install && cd ../broker1 && composer install && cd ../broker2 && composer install",
+    "migrate": "cd server && php artisan migrate && cd ../broker1 && php artisan migrate && cd ../broker2 && php artisan migrate"
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "files": [
+    "server/",
+    "broker1/",
+    "broker2/",
+    "tests/",
+    "docs/",
+    "run-tests.sh",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "LICENSE"
+  ]
+}

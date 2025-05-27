@@ -1,6 +1,99 @@
 {
+    "name": "laravel-sso/laravel-12-sso",
+    "description": "Enterprise-grade Single Sign-On (SSO) solution built with Laravel 12 for seamless multi-application authentication",
+    "keywords": [
+        "laravel",
+        "sso",
+        "single-sign-on",
+        "authentication",
+        "php",
+        "security",
+        "microservices",
+        "enterprise",
+        "session-management",
+        "api",
+        "oauth",
+        "identity-management",
+        "access-control",
+        "laravel-12",
+        "multi-application",
+        "centralized-auth",
+        "token-based-auth",
+        "distributed-systems",
+        "broker-pattern",
+        "jasny-sso"
+    ],
+    "homepage": "https://github.com/awnali/SSO-laravel-5",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Laravel SSO Contributors",
+            "email": "contributors@example.com",
+            "homepage": "https://github.com/awnali/SSO-laravel-5/graphs/contributors"
+        },
+        {
+            "name": "OpenHands AI",
+            "email": "openhands@all-hands.dev",
+            "role": "Lead Developer"
+        },
+        {
+            "name": "awnali",
+            "homepage": "https://github.com/awnali",
+            "role": "Original Author"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/awnali/SSO-laravel-5/issues",
+        "source": "https://github.com/awnali/SSO-laravel-5",
+        "docs": "https://github.com/awnali/SSO-laravel-5/blob/master/README.md",
+        "wiki": "https://github.com/awnali/SSO-laravel-5/wiki"
+    },
+    "require": {
+        "php": "^8.2",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-pdo": "*"
+    },
     "require-dev": {
-        "guzzlehttp/guzzle": "^7.9",
-        "phpunit/phpunit": "^11.5"
+        "phpunit/phpunit": "^11.5",
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "./run-tests.sh all",
+        "test:unit": "./run-tests.sh unit",
+        "test:feature": "./run-tests.sh feature",
+        "test:integration": "./run-tests.sh integration",
+        "setup": [
+            "composer install",
+            "cd server && composer install && cp .env.example .env && php artisan key:generate",
+            "cd broker1 && composer install && cp .env.example .env && php artisan key:generate",
+            "cd broker2 && composer install && cp .env.example .env && php artisan key:generate"
+        ],
+        "migrate": [
+            "cd server && touch database/database.sqlite && php artisan migrate",
+            "cd broker1 && touch database/database.sqlite && php artisan migrate",
+            "cd broker2 && touch database/database.sqlite && php artisan migrate"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "12.x-dev"
+        }
     }
 }
