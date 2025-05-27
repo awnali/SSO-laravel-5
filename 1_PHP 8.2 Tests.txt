@@ -1,0 +1,464 @@
+﻿2025-05-27T17:07:29.1723281Z Current runner version: '2.324.0'
+2025-05-27T17:07:29.1760416Z ##[group]Operating System
+2025-05-27T17:07:29.1761716Z Ubuntu
+2025-05-27T17:07:29.1762533Z 24.04.2
+2025-05-27T17:07:29.1763329Z LTS
+2025-05-27T17:07:29.1764250Z ##[endgroup]
+2025-05-27T17:07:29.1765042Z ##[group]Runner Image
+2025-05-27T17:07:29.1766114Z Image: ubuntu-24.04
+2025-05-27T17:07:29.1767130Z Version: 20250511.1.0
+2025-05-27T17:07:29.1769106Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250511.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-05-27T17:07:29.1771856Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250511.1
+2025-05-27T17:07:29.1773477Z ##[endgroup]
+2025-05-27T17:07:29.1774334Z ##[group]Runner Image Provisioner
+2025-05-27T17:07:29.1775429Z 2.0.437.1
+2025-05-27T17:07:29.1776274Z ##[endgroup]
+2025-05-27T17:07:29.1780752Z ##[group]GITHUB_TOKEN Permissions
+2025-05-27T17:07:29.1784099Z Actions: write
+2025-05-27T17:07:29.1785228Z Attestations: write
+2025-05-27T17:07:29.1786427Z Checks: write
+2025-05-27T17:07:29.1787351Z Contents: write
+2025-05-27T17:07:29.1788843Z Deployments: write
+2025-05-27T17:07:29.1789737Z Discussions: write
+2025-05-27T17:07:29.1790555Z Issues: write
+2025-05-27T17:07:29.1791465Z Metadata: read
+2025-05-27T17:07:29.1792359Z Models: read
+2025-05-27T17:07:29.1793218Z Packages: write
+2025-05-27T17:07:29.1794164Z Pages: write
+2025-05-27T17:07:29.1795042Z PullRequests: write
+2025-05-27T17:07:29.1795878Z RepositoryProjects: write
+2025-05-27T17:07:29.1796971Z SecurityEvents: write
+2025-05-27T17:07:29.1797831Z Statuses: write
+2025-05-27T17:07:29.1798911Z ##[endgroup]
+2025-05-27T17:07:29.1802052Z Secret source: Actions
+2025-05-27T17:07:29.1803433Z Prepare workflow directory
+2025-05-27T17:07:29.2298801Z Prepare all required actions
+2025-05-27T17:07:29.2357422Z Getting action download info
+2025-05-27T17:07:29.5601357Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-05-27T17:07:29.5602430Z Version: 4.2.2
+2025-05-27T17:07:29.5603414Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-05-27T17:07:29.5604652Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-05-27T17:07:29.5605375Z ##[endgroup]
+2025-05-27T17:07:29.6289943Z Download action repository 'shivammathur/setup-php@v2' (SHA:cf4cade2721270509d5b1c766ab3549210a39a2a)
+2025-05-27T17:07:29.9447932Z ##[group]Download immutable action package 'actions/cache@v3'
+2025-05-27T17:07:29.9448991Z Version: 3.4.3
+2025-05-27T17:07:29.9449718Z Digest: sha256:912f76fb11db1ca09ae23248a39eb86e79ea0f0f6e183d9cb96d0b778eeea4e2
+2025-05-27T17:07:29.9450821Z Source commit SHA: 2f8e54208210a422b2efd51efaa6bd6d7ca8920f
+2025-05-27T17:07:29.9451485Z ##[endgroup]
+2025-05-27T17:07:30.1234327Z Complete job name: PHP 8.2 Tests
+2025-05-27T17:07:30.1926091Z ##[group]Run actions/checkout@v4
+2025-05-27T17:07:30.1926913Z with:
+2025-05-27T17:07:30.1927374Z   repository: awnali/Single-Sign-On-SSO-laravel-web
+2025-05-27T17:07:30.1928335Z   token: ***
+2025-05-27T17:07:30.1928727Z   ssh-strict: true
+2025-05-27T17:07:30.1929136Z   ssh-user: git
+2025-05-27T17:07:30.1929533Z   persist-credentials: true
+2025-05-27T17:07:30.1929964Z   clean: true
+2025-05-27T17:07:30.1930367Z   sparse-checkout-cone-mode: true
+2025-05-27T17:07:30.1930834Z   fetch-depth: 1
+2025-05-27T17:07:30.1931213Z   fetch-tags: false
+2025-05-27T17:07:30.1931623Z   show-progress: true
+2025-05-27T17:07:30.1932013Z   lfs: false
+2025-05-27T17:07:30.1932368Z   submodules: false
+2025-05-27T17:07:30.1932757Z   set-safe-directory: true
+2025-05-27T17:07:30.1933436Z ##[endgroup]
+2025-05-27T17:07:30.3741405Z Syncing repository: awnali/Single-Sign-On-SSO-laravel-web
+2025-05-27T17:07:30.3743602Z ##[group]Getting Git version info
+2025-05-27T17:07:30.3744883Z Working directory is '/home/runner/work/Single-Sign-On-SSO-laravel-web/Single-Sign-On-SSO-laravel-web'
+2025-05-27T17:07:30.3746415Z [command]/usr/bin/git version
+2025-05-27T17:07:30.3796097Z git version 2.49.0
+2025-05-27T17:07:30.3824586Z ##[endgroup]
+2025-05-27T17:07:30.3840193Z Temporarily overriding HOME='/home/runner/work/_temp/25a6de1f-09c9-4f3f-b6b6-098ba8ebe4ff' before making global git config changes
+2025-05-27T17:07:30.3843318Z Adding repository directory to the temporary git global config as a safe directory
+2025-05-27T17:07:30.3846845Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Single-Sign-On-SSO-laravel-web/Single-Sign-On-SSO-laravel-web
+2025-05-27T17:07:30.3883582Z Deleting the contents of '/home/runner/work/Single-Sign-On-SSO-laravel-web/Single-Sign-On-SSO-laravel-web'
+2025-05-27T17:07:30.3887733Z ##[group]Initializing the repository
+2025-05-27T17:07:30.3893688Z [command]/usr/bin/git init /home/runner/work/Single-Sign-On-SSO-laravel-web/Single-Sign-On-SSO-laravel-web
+2025-05-27T17:07:30.3961861Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-05-27T17:07:30.3966206Z hint: is subject to change. To configure the initial branch name to use in all
+2025-05-27T17:07:30.3967687Z hint: of your new repositories, which will suppress this warning, call:
+2025-05-27T17:07:30.3969379Z hint:
+2025-05-27T17:07:30.3970403Z hint: 	git config --global init.defaultBranch <name>
+2025-05-27T17:07:30.3971623Z hint:
+2025-05-27T17:07:30.3972831Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-05-27T17:07:30.3974636Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-05-27T17:07:30.3975989Z hint:
+2025-05-27T17:07:30.3976776Z hint: 	git branch -m <name>
+2025-05-27T17:07:30.3979004Z Initialized empty Git repository in /home/runner/work/Single-Sign-On-SSO-laravel-web/Single-Sign-On-SSO-laravel-web/.git/
+2025-05-27T17:07:30.3982990Z [command]/usr/bin/git remote add origin https://github.com/awnali/Single-Sign-On-SSO-laravel-web
+2025-05-27T17:07:30.4014792Z ##[endgroup]
+2025-05-27T17:07:30.4016208Z ##[group]Disabling automatic garbage collection
+2025-05-27T17:07:30.4019906Z [command]/usr/bin/git config --local gc.auto 0
+2025-05-27T17:07:30.4050364Z ##[endgroup]
+2025-05-27T17:07:30.4051812Z ##[group]Setting up auth
+2025-05-27T17:07:30.4058393Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-05-27T17:07:30.4089612Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-05-27T17:07:30.4391432Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-05-27T17:07:30.4420730Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-05-27T17:07:30.4643087Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-05-27T17:07:30.4685879Z ##[endgroup]
+2025-05-27T17:07:30.4687336Z ##[group]Fetching the repository
+2025-05-27T17:07:30.4696318Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9518bb15bbcf1f6ed94072f1db6b755260d197df:refs/remotes/origin/master
+2025-05-27T17:07:31.0777888Z From https://github.com/awnali/Single-Sign-On-SSO-laravel-web
+2025-05-27T17:07:31.0779333Z  * [new ref]         9518bb15bbcf1f6ed94072f1db6b755260d197df -> origin/master
+2025-05-27T17:07:31.0806736Z ##[endgroup]
+2025-05-27T17:07:31.0807521Z ##[group]Determining the checkout info
+2025-05-27T17:07:31.0810091Z ##[endgroup]
+2025-05-27T17:07:31.0815660Z [command]/usr/bin/git sparse-checkout disable
+2025-05-27T17:07:31.0860208Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-05-27T17:07:31.0887780Z ##[group]Checking out the ref
+2025-05-27T17:07:31.0892335Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+2025-05-27T17:07:31.2100393Z Reset branch 'master'
+2025-05-27T17:07:31.2102228Z branch 'master' set up to track 'origin/master'.
+2025-05-27T17:07:31.2112397Z ##[endgroup]
+2025-05-27T17:07:31.2155802Z [command]/usr/bin/git log -1 --format=%H
+2025-05-27T17:07:31.2180508Z 9518bb15bbcf1f6ed94072f1db6b755260d197df
+2025-05-27T17:07:31.2403387Z ##[group]Run shivammathur/setup-php@v2
+2025-05-27T17:07:31.2403798Z with:
+2025-05-27T17:07:31.2404056Z   php-version: 8.2
+2025-05-27T17:07:31.2404553Z   extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+2025-05-27T17:07:31.2405099Z   coverage: none
+2025-05-27T17:07:31.2405364Z   ini-file: production
+2025-05-27T17:07:31.2405645Z ##[endgroup]
+2025-05-27T17:07:31.3152728Z [command]/usr/bin/bash /home/runner/work/_actions/shivammathur/setup-php/v2/src/scripts/run.sh
+2025-05-27T17:07:31.3419242Z 
+2025-05-27T17:07:31.3420312Z [90;1m==> [0m[37;1mSetup PHP[0m
+2025-05-27T17:07:34.9391455Z [32;1m✓ [0m[34;1mPHP [0m[90;1mInstalled PHP 8.2.28[0m
+2025-05-27T17:07:34.9392029Z 
+2025-05-27T17:07:34.9392286Z [90;1m==> [0m[37;1mSetup Extensions[0m
+2025-05-27T17:07:34.9863994Z [32;1m✓ [0m[34;1mmbstring [0m[90;1mEnabled[0m
+2025-05-27T17:07:34.9895149Z [32;1m✓ [0m[34;1mxml [0m[90;1mEnabled[0m
+2025-05-27T17:07:34.9927060Z [32;1m✓ [0m[34;1mctype [0m[90;1mEnabled[0m
+2025-05-27T17:07:34.9959427Z [32;1m✓ [0m[34;1miconv [0m[90;1mEnabled[0m
+2025-05-27T17:07:34.9990281Z [32;1m✓ [0m[34;1mintl [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0007259Z [32;1m✓ [0m[34;1mpdo_sqlite [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0037425Z [32;1m✓ [0m[34;1mdom [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0067884Z [32;1m✓ [0m[34;1mfilter [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0097186Z [32;1m✓ [0m[34;1mgd [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0128425Z [32;1m✓ [0m[34;1miconv [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0157746Z [32;1m✓ [0m[34;1mjson [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0187391Z [32;1m✓ [0m[34;1mmbstring [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0217016Z [32;1m✓ [0m[34;1mpdo [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0217450Z 
+2025-05-27T17:07:35.0217900Z [90;1m==> [0m[37;1mSetup Tools[0m
+2025-05-27T17:07:35.3540702Z [32;1m✓ [0m[34;1mcomposer [0m[90;1mAdded composer 2.8.9[0m
+2025-05-27T17:07:35.3542561Z 
+2025-05-27T17:07:35.3543485Z [90;1m==> [0m[37;1mSetup Coverage[0m
+2025-05-27T17:07:35.5741442Z [32;1m✓ [0m[34;1mnone [0m[90;1mDisabled Xdebug and PCOV[0m
+2025-05-27T17:07:35.5741908Z 
+2025-05-27T17:07:35.5742156Z [90;1m==> [0m[37;1mSponsor setup-php[0m
+2025-05-27T17:07:35.5742992Z [32;1m✓ [0m[34;1msetup-php [0m[90;1mhttps://setup-php.com/sponsor[0m
+2025-05-27T17:07:35.8700568Z ##[group]Run actions/cache@v3
+2025-05-27T17:07:35.8700824Z with:
+2025-05-27T17:07:35.8700990Z   path: vendor
+2025-05-27T17:07:35.8701339Z   key: Linux-php-23d06ae7298f26f64cb32af6a4d080d356d26c76c982b48a7309325d811a4837
+2025-05-27T17:07:35.8701739Z   restore-keys: Linux-php-
+
+2025-05-27T17:07:35.8701971Z   enableCrossOsArchive: false
+2025-05-27T17:07:35.8702192Z   fail-on-cache-miss: false
+2025-05-27T17:07:35.8702390Z   lookup-only: false
+2025-05-27T17:07:35.8702594Z env:
+2025-05-27T17:07:35.8702757Z   COMPOSER_PROCESS_TIMEOUT: 0
+2025-05-27T17:07:35.8702971Z   COMPOSER_NO_INTERACTION: 1
+2025-05-27T17:07:35.8703163Z   COMPOSER_NO_AUDIT: 1
+2025-05-27T17:07:35.8703345Z ##[endgroup]
+2025-05-27T17:07:36.1110292Z Cache not found for input keys: Linux-php-23d06ae7298f26f64cb32af6a4d080d356d26c76c982b48a7309325d811a4837, Linux-php-
+2025-05-27T17:07:36.1208789Z ##[group]Run composer install --prefer-dist --no-progress
+2025-05-27T17:07:36.1209253Z [36;1mcomposer install --prefer-dist --no-progress[0m
+2025-05-27T17:07:36.1407521Z shell: /usr/bin/bash -e {0}
+2025-05-27T17:07:36.1407762Z env:
+2025-05-27T17:07:36.1407937Z   COMPOSER_PROCESS_TIMEOUT: 0
+2025-05-27T17:07:36.1408414Z   COMPOSER_NO_INTERACTION: 1
+2025-05-27T17:07:36.1469363Z   COMPOSER_NO_AUDIT: 1
+2025-05-27T17:07:36.1469680Z ##[endgroup]
+2025-05-27T17:07:36.2867414Z Installing dependencies from lock file (including require-dev)
+2025-05-27T17:07:36.2872320Z Verifying lock file contents can be installed on current platform.
+2025-05-27T17:07:36.2949793Z Warning: The lock file is not up to date with the latest changes in composer.json. You may be getting outdated dependencies. It is recommended that you run `composer update` or `composer update <package name>`.
+2025-05-27T17:07:36.3025561Z Nothing to install, update or remove
+2025-05-27T17:07:36.3051149Z Generating optimized autoload files
+2025-05-27T17:07:36.5690136Z 29 packages you are using are looking for funding.
+2025-05-27T17:07:36.5690860Z Use the `composer fund` command to find out more!
+2025-05-27T17:07:36.5847016Z ##[group]Run cd server
+2025-05-27T17:07:36.5847292Z [36;1mcd server[0m
+2025-05-27T17:07:36.5847555Z [36;1mcomposer install --prefer-dist --no-progress[0m
+2025-05-27T17:07:36.5847853Z [36;1mcp .env.example .env[0m
+2025-05-27T17:07:36.5848292Z [36;1mphp artisan key:generate[0m
+2025-05-27T17:07:36.5848555Z [36;1mtouch database/database.sqlite[0m
+2025-05-27T17:07:36.5848814Z [36;1mphp artisan migrate --force[0m
+2025-05-27T17:07:36.5903146Z shell: /usr/bin/bash -e {0}
+2025-05-27T17:07:36.5903380Z env:
+2025-05-27T17:07:36.5903560Z   COMPOSER_PROCESS_TIMEOUT: 0
+2025-05-27T17:07:36.5903790Z   COMPOSER_NO_INTERACTION: 1
+2025-05-27T17:07:36.5903997Z   COMPOSER_NO_AUDIT: 1
+2025-05-27T17:07:36.5904175Z ##[endgroup]
+2025-05-27T17:07:36.7242382Z Installing dependencies from lock file (including require-dev)
+2025-05-27T17:07:36.7290803Z Verifying lock file contents can be installed on current platform.
+2025-05-27T17:07:36.7482450Z Package operations: 112 installs, 0 updates, 0 removals
+2025-05-27T17:07:36.7499324Z   - Downloading doctrine/inflector (2.0.10)
+2025-05-27T17:07:36.7507488Z   - Downloading doctrine/lexer (3.0.1)
+2025-05-27T17:07:36.7510879Z   - Downloading symfony/polyfill-ctype (v1.32.0)
+2025-05-27T17:07:36.7513940Z   - Downloading webmozart/assert (1.11.0)
+2025-05-27T17:07:36.7517046Z   - Downloading dragonmantank/cron-expression (v3.4.0)
+2025-05-27T17:07:36.7519945Z   - Downloading symfony/deprecation-contracts (v3.6.0)
+2025-05-27T17:07:36.7522948Z   - Downloading psr/container (2.0.2)
+2025-05-27T17:07:36.7526295Z   - Downloading fakerphp/faker (v1.24.1)
+2025-05-27T17:07:36.7529171Z   - Downloading symfony/polyfill-php83 (v1.32.0)
+2025-05-27T17:07:36.7531875Z   - Downloading symfony/polyfill-mbstring (v1.32.0)
+2025-05-27T17:07:36.7534537Z   - Downloading symfony/http-foundation (v7.2.6)
+2025-05-27T17:07:36.7537532Z   - Downloading fruitcake/php-cors (v1.3.0)
+2025-05-27T17:07:36.7540306Z   - Downloading psr/http-message (2.0)
+2025-05-27T17:07:36.7541746Z   - Downloading psr/http-client (1.0.3)
+2025-05-27T17:07:36.7544100Z   - Downloading ralouphie/getallheaders (3.0.3)
+2025-05-27T17:07:36.7545514Z   - Downloading psr/http-factory (1.1.0)
+2025-05-27T17:07:36.7547848Z   - Downloading guzzlehttp/psr7 (2.7.1)
+2025-05-27T17:07:36.7549471Z   - Downloading guzzlehttp/promises (2.2.0)
+2025-05-27T17:07:36.7551140Z   - Downloading guzzlehttp/guzzle (7.9.3)
+2025-05-27T17:07:36.7553029Z   - Downloading symfony/polyfill-php80 (v1.32.0)
+2025-05-27T17:07:36.7554427Z   - Downloading guzzlehttp/uri-template (v1.0.4)
+2025-05-27T17:07:36.7556686Z   - Downloading jasny/validation-result (v1.1.3)
+2025-05-27T17:07:36.7559007Z   - Downloading desarrolla2/cache (v2.1.3)
+2025-05-27T17:07:36.7560488Z   - Downloading jasny/sso (v0.2.3)
+2025-05-27T17:07:36.7562390Z   - Downloading symfony/polyfill-intl-normalizer (v1.32.0)
+2025-05-27T17:07:36.7563872Z   - Downloading symfony/polyfill-intl-grapheme (v1.32.0)
+2025-05-27T17:07:36.7565370Z   - Downloading symfony/string (v7.2.6)
+2025-05-27T17:07:36.7567279Z   - Downloading symfony/service-contracts (v3.6.0)
+2025-05-27T17:07:36.7568852Z   - Downloading symfony/console (v7.2.6)
+2025-05-27T17:07:36.7571215Z   - Downloading laravel/prompts (v0.3.5)
+2025-05-27T17:07:36.7572639Z   - Downloading laravel/serializable-closure (v2.0.4)
+2025-05-27T17:07:36.7574162Z   - Downloading symfony/var-dumper (v7.2.6)
+2025-05-27T17:07:36.7576440Z   - Downloading nikic/php-parser (v5.4.0)
+2025-05-27T17:07:36.7578531Z   - Downloading psy/psysh (v0.12.8)
+2025-05-27T17:07:36.7580924Z   - Downloading voku/portable-ascii (2.0.3)
+2025-05-27T17:07:36.7583111Z   - Downloading phpoption/phpoption (1.9.3)
+2025-05-27T17:07:36.7585265Z   - Downloading graham-campbell/result-type (v1.1.3)
+2025-05-27T17:07:36.7587389Z   - Downloading vlucas/phpdotenv (v5.6.2)
+2025-05-27T17:07:36.7588997Z   - Downloading symfony/css-selector (v7.2.0)
+2025-05-27T17:07:36.7591397Z   - Downloading tijsverkoyen/css-to-inline-styles (v2.3.0)
+2025-05-27T17:07:36.7592689Z   - Downloading symfony/polyfill-uuid (v1.32.0)
+2025-05-27T17:07:36.7594762Z   - Downloading symfony/uid (v7.2.0)
+2025-05-27T17:07:36.7596049Z   - Downloading symfony/routing (v7.2.3)
+2025-05-27T17:07:36.7597936Z   - Downloading symfony/process (v7.2.5)
+2025-05-27T17:07:36.7599614Z   - Downloading symfony/polyfill-intl-idn (v1.32.0)
+2025-05-27T17:07:36.7601182Z   - Downloading symfony/mime (v7.2.6)
+2025-05-27T17:07:36.7602957Z   - Downloading psr/event-dispatcher (1.0.0)
+2025-05-27T17:07:36.7604609Z   - Downloading symfony/event-dispatcher-contracts (v3.6.0)
+2025-05-27T17:07:36.7606122Z   - Downloading symfony/event-dispatcher (v7.2.0)
+2025-05-27T17:07:36.7607561Z   - Downloading psr/log (3.0.2)
+2025-05-27T17:07:36.7609695Z   - Downloading egulias/email-validator (4.0.4)
+2025-05-27T17:07:36.7611169Z   - Downloading symfony/mailer (v7.2.6)
+2025-05-27T17:07:36.7612992Z   - Downloading symfony/error-handler (v7.2.5)
+2025-05-27T17:07:36.7614311Z   - Downloading symfony/http-kernel (v7.2.6)
+2025-05-27T17:07:36.7616165Z   - Downloading symfony/finder (v7.2.2)
+2025-05-27T17:07:36.7618556Z   - Downloading ramsey/collection (2.1.1)
+2025-05-27T17:07:36.7620740Z   - Downloading brick/math (0.12.3)
+2025-05-27T17:07:36.7622050Z   - Downloading ramsey/uuid (4.7.6)
+2025-05-27T17:07:36.7624034Z   - Downloading psr/simple-cache (3.0.0)
+2025-05-27T17:07:36.7626155Z   - Downloading nunomaduro/termwind (v2.3.1)
+2025-05-27T17:07:36.7627624Z   - Downloading symfony/translation-contracts (v3.6.0)
+2025-05-27T17:07:36.7629528Z   - Downloading symfony/translation (v7.2.6)
+2025-05-27T17:07:36.7631002Z   - Downloading psr/clock (1.0.0)
+2025-05-27T17:07:36.7632830Z   - Downloading symfony/clock (v7.2.0)
+2025-05-27T17:07:36.7635247Z   - Downloading carbonphp/carbon-doctrine-types (3.2.0)
+2025-05-27T17:07:36.7637403Z   - Downloading nesbot/carbon (3.9.1)
+2025-05-27T17:07:36.7639930Z   - Downloading monolog/monolog (3.9.0)
+2025-05-27T17:07:36.7642052Z   - Downloading league/uri-interfaces (7.5.0)
+2025-05-27T17:07:36.7643421Z   - Downloading league/uri (7.5.1)
+2025-05-27T17:07:36.7645409Z   - Downloading league/mime-type-detection (1.16.0)
+2025-05-27T17:07:36.7647022Z   - Downloading league/flysystem-local (3.29.0)
+2025-05-27T17:07:36.7649161Z   - Downloading league/flysystem (3.29.1)
+2025-05-27T17:07:36.7651370Z   - Downloading nette/utils (v4.0.6)
+2025-05-27T17:07:36.7652763Z   - Downloading nette/schema (v1.3.2)
+2025-05-27T17:07:36.7656902Z   - Downloading dflydev/dot-access-data (v3.0.3)
+2025-05-27T17:07:36.7658388Z   - Downloading league/config (v1.2.0)
+2025-05-27T17:07:36.7660282Z   - Downloading league/commonmark (2.7.0)
+2025-05-27T17:07:36.7661740Z   - Downloading laravel/framework (v12.15.0)
+2025-05-27T17:07:36.7663512Z   - Downloading laravel/tinker (v2.10.1)
+2025-05-27T17:07:36.7665841Z   - Downloading hamcrest/hamcrest-php (v2.1.1)
+2025-05-27T17:07:36.7667984Z   - Downloading mockery/mockery (1.6.12)
+2025-05-27T17:07:36.7670525Z   - Downloading staabm/side-effects-detector (1.0.5)
+2025-05-27T17:07:36.7672741Z   - Downloading sebastian/version (5.0.2)
+2025-05-27T17:07:36.7674162Z   - Downloading sebastian/type (5.1.2)
+2025-05-27T17:07:36.7675968Z   - Downloading sebastian/recursion-context (6.0.2)
+2025-05-27T17:07:36.7677577Z   - Downloading sebastian/object-reflector (4.0.1)
+2025-05-27T17:07:36.7679639Z   - Downloading sebastian/object-enumerator (6.0.1)
+2025-05-27T17:07:36.7681075Z   - Downloading sebastian/global-state (7.0.2)
+2025-05-27T17:07:36.7682629Z   - Downloading sebastian/exporter (6.3.0)
+2025-05-27T17:07:36.7684484Z   - Downloading sebastian/environment (7.2.1)
+2025-05-27T17:07:36.7685863Z   - Downloading sebastian/diff (6.0.2)
+2025-05-27T17:07:36.7687812Z   - Downloading sebastian/comparator (6.3.1)
+2025-05-27T17:07:36.7689443Z   - Downloading sebastian/code-unit (3.0.3)
+2025-05-27T17:07:36.7691226Z   - Downloading sebastian/cli-parser (3.0.2)
+2025-05-27T17:07:36.7693473Z   - Downloading phpunit/php-timer (7.0.1)
+2025-05-27T17:07:36.7694888Z   - Downloading phpunit/php-text-template (4.0.1)
+2025-05-27T17:07:36.7696732Z   - Downloading phpunit/php-invoker (5.0.1)
+2025-05-27T17:07:36.7698509Z   - Downloading phpunit/php-file-iterator (5.1.0)
+2025-05-27T17:07:36.7700718Z   - Downloading theseer/tokenizer (1.2.3)
+2025-05-27T17:07:36.7702167Z   - Downloading sebastian/lines-of-code (3.0.1)
+2025-05-27T17:07:36.7704045Z   - Downloading sebastian/complexity (4.0.1)
+2025-05-27T17:07:36.7705531Z   - Downloading sebastian/code-unit-reverse-lookup (4.0.1)
+2025-05-27T17:07:36.7707062Z   - Downloading phpunit/php-code-coverage (11.0.9)
+2025-05-27T17:07:36.7709595Z   - Downloading phar-io/version (3.2.1)
+2025-05-27T17:07:36.7710967Z   - Downloading phar-io/manifest (2.0.4)
+2025-05-27T17:07:36.7713393Z   - Downloading myclabs/deep-copy (1.13.1)
+2025-05-27T17:07:36.7714774Z   - Downloading phpunit/phpunit (11.5.21)
+2025-05-27T17:07:36.7717105Z   - Downloading spatie/error-solutions (1.1.3)
+2025-05-27T17:07:36.7718639Z   - Downloading spatie/backtrace (1.7.4)
+2025-05-27T17:07:36.7720606Z   - Downloading spatie/flare-client-php (1.10.1)
+2025-05-27T17:07:36.7721991Z   - Downloading spatie/ignition (1.15.1)
+2025-05-27T17:07:36.7723759Z   - Downloading spatie/laravel-ignition (2.9.1)
+2025-05-27T17:07:37.7686040Z   - Installing doctrine/inflector (2.0.10): Extracting archive
+2025-05-27T17:07:37.7725955Z   - Installing doctrine/lexer (3.0.1): Extracting archive
+2025-05-27T17:07:37.7753634Z   - Installing symfony/polyfill-ctype (v1.32.0): Extracting archive
+2025-05-27T17:07:37.7798940Z   - Installing webmozart/assert (1.11.0): Extracting archive
+2025-05-27T17:07:37.7828715Z   - Installing dragonmantank/cron-expression (v3.4.0): Extracting archive
+2025-05-27T17:07:37.7845815Z   - Installing symfony/deprecation-contracts (v3.6.0): Extracting archive
+2025-05-27T17:07:37.7877590Z   - Installing psr/container (2.0.2): Extracting archive
+2025-05-27T17:07:37.7910068Z   - Installing fakerphp/faker (v1.24.1): Extracting archive
+2025-05-27T17:07:37.7942064Z   - Installing symfony/polyfill-php83 (v1.32.0): Extracting archive
+2025-05-27T17:07:37.7974613Z   - Installing symfony/polyfill-mbstring (v1.32.0): Extracting archive
+2025-05-27T17:07:37.8006641Z   - Installing symfony/http-foundation (v7.2.6): Extracting archive
+2025-05-27T17:07:37.8013054Z   - Installing fruitcake/php-cors (v1.3.0): Extracting archive
+2025-05-27T17:07:37.8018805Z   - Installing psr/http-message (2.0): Extracting archive
+2025-05-27T17:07:37.8026754Z   - Installing psr/http-client (1.0.3): Extracting archive
+2025-05-27T17:07:37.8028517Z   - Installing ralouphie/getallheaders (3.0.3): Extracting archive
+2025-05-27T17:07:37.8031716Z   - Installing psr/http-factory (1.1.0): Extracting archive
+2025-05-27T17:07:37.8037190Z   - Installing guzzlehttp/psr7 (2.7.1): Extracting archive
+2025-05-27T17:07:37.8041748Z   - Installing guzzlehttp/promises (2.2.0): Extracting archive
+2025-05-27T17:07:37.8044398Z   - Installing guzzlehttp/guzzle (7.9.3): Extracting archive
+2025-05-27T17:07:37.8048002Z   - Installing symfony/polyfill-php80 (v1.32.0): Extracting archive
+2025-05-27T17:07:37.8051091Z   - Installing guzzlehttp/uri-template (v1.0.4): Extracting archive
+2025-05-27T17:07:37.8054824Z   - Installing jasny/validation-result (v1.1.3): Extracting archive
+2025-05-27T17:07:37.8057252Z   - Installing desarrolla2/cache (v2.1.3): Extracting archive
+2025-05-27T17:07:37.8060591Z   - Installing jasny/sso (v0.2.3): Extracting archive
+2025-05-27T17:07:37.8063721Z   - Installing symfony/polyfill-intl-normalizer (v1.32.0): Extracting archive
+2025-05-27T17:07:37.8067224Z   - Installing symfony/polyfill-intl-grapheme (v1.32.0): Extracting archive
+2025-05-27T17:07:37.8070204Z   - Installing symfony/string (v7.2.6): Extracting archive
+2025-05-27T17:07:37.8074073Z   - Installing symfony/service-contracts (v3.6.0): Extracting archive
+2025-05-27T17:07:37.8076607Z   - Installing symfony/console (v7.2.6): Extracting archive
+2025-05-27T17:07:37.8080146Z   - Installing laravel/prompts (v0.3.5): Extracting archive
+2025-05-27T17:07:37.8082695Z   - Installing laravel/serializable-closure (v2.0.4): Extracting archive
+2025-05-27T17:07:37.8085455Z   - Installing symfony/var-dumper (v7.2.6): Extracting archive
+2025-05-27T17:07:37.8088256Z   - Installing nikic/php-parser (v5.4.0): Extracting archive
+2025-05-27T17:07:37.8090771Z   - Installing psy/psysh (v0.12.8): Extracting archive
+2025-05-27T17:07:37.8093552Z   - Installing voku/portable-ascii (2.0.3): Extracting archive
+2025-05-27T17:07:37.8096247Z   - Installing phpoption/phpoption (1.9.3): Extracting archive
+2025-05-27T17:07:37.8099424Z   - Installing graham-campbell/result-type (v1.1.3): Extracting archive
+2025-05-27T17:07:37.8102256Z   - Installing vlucas/phpdotenv (v5.6.2): Extracting archive
+2025-05-27T17:07:37.8105351Z   - Installing symfony/css-selector (v7.2.0): Extracting archive
+2025-05-27T17:07:37.8108336Z   - Installing tijsverkoyen/css-to-inline-styles (v2.3.0): Extracting archive
+2025-05-27T17:07:37.8111868Z   - Installing symfony/polyfill-uuid (v1.32.0): Extracting archive
+2025-05-27T17:07:37.8115066Z   - Installing symfony/uid (v7.2.0): Extracting archive
+2025-05-27T17:07:37.8117975Z   - Installing symfony/routing (v7.2.3): Extracting archive
+2025-05-27T17:07:37.8121083Z   - Installing symfony/process (v7.2.5): Extracting archive
+2025-05-27T17:07:37.8123910Z   - Installing symfony/polyfill-intl-idn (v1.32.0): Extracting archive
+2025-05-27T17:07:37.8126798Z   - Installing symfony/mime (v7.2.6): Extracting archive
+2025-05-27T17:07:37.8130053Z   - Installing psr/event-dispatcher (1.0.0): Extracting archive
+2025-05-27T17:07:37.8132779Z   - Installing symfony/event-dispatcher-contracts (v3.6.0): Extracting archive
+2025-05-27T17:07:37.8135668Z   - Installing symfony/event-dispatcher (v7.2.0): Extracting archive
+2025-05-27T17:07:37.8139050Z   - Installing psr/log (3.0.2): Extracting archive
+2025-05-27T17:07:37.8141780Z   - Installing egulias/email-validator (4.0.4): Extracting archive
+2025-05-27T17:07:37.8144416Z   - Installing symfony/mailer (v7.2.6): Extracting archive
+2025-05-27T17:07:37.8147061Z   - Installing symfony/error-handler (v7.2.5): Extracting archive
+2025-05-27T17:07:37.8150180Z   - Installing symfony/http-kernel (v7.2.6): Extracting archive
+2025-05-27T17:07:37.8152954Z   - Installing symfony/finder (v7.2.2): Extracting archive
+2025-05-27T17:07:37.8155746Z   - Installing ramsey/collection (2.1.1): Extracting archive
+2025-05-27T17:07:37.8159014Z   - Installing brick/math (0.12.3): Extracting archive
+2025-05-27T17:07:37.8161741Z   - Installing ramsey/uuid (4.7.6): Extracting archive
+2025-05-27T17:07:37.8164534Z   - Installing psr/simple-cache (3.0.0): Extracting archive
+2025-05-27T17:07:37.8167384Z   - Installing nunomaduro/termwind (v2.3.1): Extracting archive
+2025-05-27T17:07:37.8170648Z   - Installing symfony/translation-contracts (v3.6.0): Extracting archive
+2025-05-27T17:07:37.8173310Z   - Installing symfony/translation (v7.2.6): Extracting archive
+2025-05-27T17:07:37.8176091Z   - Installing psr/clock (1.0.0): Extracting archive
+2025-05-27T17:07:37.8179037Z   - Installing symfony/clock (v7.2.0): Extracting archive
+2025-05-27T17:07:37.8181895Z   - Installing carbonphp/carbon-doctrine-types (3.2.0): Extracting archive
+2025-05-27T17:07:37.8185248Z   - Installing nesbot/carbon (3.9.1): Extracting archive
+2025-05-27T17:07:37.8188459Z   - Installing monolog/monolog (3.9.0): Extracting archive
+2025-05-27T17:07:37.8191173Z   - Installing league/uri-interfaces (7.5.0): Extracting archive
+2025-05-27T17:07:37.8193925Z   - Installing league/uri (7.5.1): Extracting archive
+2025-05-27T17:07:37.8196856Z   - Installing league/mime-type-detection (1.16.0): Extracting archive
+2025-05-27T17:07:37.8199893Z   - Installing league/flysystem-local (3.29.0): Extracting archive
+2025-05-27T17:07:37.8202743Z   - Installing league/flysystem (3.29.1): Extracting archive
+2025-05-27T17:07:37.8205266Z   - Installing nette/utils (v4.0.6): Extracting archive
+2025-05-27T17:07:37.8207864Z   - Installing nette/schema (v1.3.2): Extracting archive
+2025-05-27T17:07:37.8210790Z   - Installing dflydev/dot-access-data (v3.0.3): Extracting archive
+2025-05-27T17:07:37.8213589Z   - Installing league/config (v1.2.0): Extracting archive
+2025-05-27T17:07:37.8216504Z   - Installing league/commonmark (2.7.0): Extracting archive
+2025-05-27T17:07:37.8219047Z   - Installing laravel/framework (v12.15.0): Extracting archive
+2025-05-27T17:07:37.8221654Z   - Installing laravel/tinker (v2.10.1): Extracting archive
+2025-05-27T17:07:37.8224788Z   - Installing hamcrest/hamcrest-php (v2.1.1): Extracting archive
+2025-05-27T17:07:37.8227259Z   - Installing mockery/mockery (1.6.12): Extracting archive
+2025-05-27T17:07:37.8231990Z   - Installing staabm/side-effects-detector (1.0.5): Extracting archive
+2025-05-27T17:07:37.8234831Z   - Installing sebastian/version (5.0.2): Extracting archive
+2025-05-27T17:07:37.8238481Z   - Installing sebastian/type (5.1.2): Extracting archive
+2025-05-27T17:07:37.8241529Z   - Installing sebastian/recursion-context (6.0.2): Extracting archive
+2025-05-27T17:07:37.8245194Z   - Installing sebastian/object-reflector (4.0.1): Extracting archive
+2025-05-27T17:07:37.8248904Z   - Installing sebastian/object-enumerator (6.0.1): Extracting archive
+2025-05-27T17:07:37.8251843Z   - Installing sebastian/global-state (7.0.2): Extracting archive
+2025-05-27T17:07:37.8255142Z   - Installing sebastian/exporter (6.3.0): Extracting archive
+2025-05-27T17:07:37.8258722Z   - Installing sebastian/environment (7.2.1): Extracting archive
+2025-05-27T17:07:37.8261189Z   - Installing sebastian/diff (6.0.2): Extracting archive
+2025-05-27T17:07:37.8266677Z   - Installing sebastian/comparator (6.3.1): Extracting archive
+2025-05-27T17:07:37.8269548Z   - Installing sebastian/code-unit (3.0.3): Extracting archive
+2025-05-27T17:07:37.8271984Z   - Installing sebastian/cli-parser (3.0.2): Extracting archive
+2025-05-27T17:07:37.8274225Z   - Installing phpunit/php-timer (7.0.1): Extracting archive
+2025-05-27T17:07:37.8276792Z   - Installing phpunit/php-text-template (4.0.1): Extracting archive
+2025-05-27T17:07:37.8279226Z   - Installing phpunit/php-invoker (5.0.1): Extracting archive
+2025-05-27T17:07:37.8281849Z   - Installing phpunit/php-file-iterator (5.1.0): Extracting archive
+2025-05-27T17:07:37.8284068Z   - Installing theseer/tokenizer (1.2.3): Extracting archive
+2025-05-27T17:07:37.8286327Z   - Installing sebastian/lines-of-code (3.0.1): Extracting archive
+2025-05-27T17:07:37.8288739Z   - Installing sebastian/complexity (4.0.1): Extracting archive
+2025-05-27T17:07:37.8291134Z   - Installing sebastian/code-unit-reverse-lookup (4.0.1): Extracting archive
+2025-05-27T17:07:37.8293412Z   - Installing phpunit/php-code-coverage (11.0.9): Extracting archive
+2025-05-27T17:07:37.8295560Z   - Installing phar-io/version (3.2.1): Extracting archive
+2025-05-27T17:07:37.8297990Z   - Installing phar-io/manifest (2.0.4): Extracting archive
+2025-05-27T17:07:37.8300541Z   - Installing myclabs/deep-copy (1.13.1): Extracting archive
+2025-05-27T17:07:37.8302808Z   - Installing phpunit/phpunit (11.5.21): Extracting archive
+2025-05-27T17:07:37.8305048Z   - Installing spatie/error-solutions (1.1.3): Extracting archive
+2025-05-27T17:07:37.8307350Z   - Installing spatie/backtrace (1.7.4): Extracting archive
+2025-05-27T17:07:37.8309881Z   - Installing spatie/flare-client-php (1.10.1): Extracting archive
+2025-05-27T17:07:37.8312566Z   - Installing spatie/ignition (1.15.1): Extracting archive
+2025-05-27T17:07:37.8314876Z   - Installing spatie/laravel-ignition (2.9.1): Extracting archive
+2025-05-27T17:07:39.3838024Z Generating optimized autoload files
+2025-05-27T17:07:40.9924394Z > Illuminate\Foundation\ComposerScripts::postAutoloadDump
+2025-05-27T17:07:41.0059086Z > @php artisan package:discover --ansi
+2025-05-27T17:07:41.1523565Z 
+2025-05-27T17:07:41.1524607Z   [37;44m INFO [39;49m Discovering packages.  
+2025-05-27T17:07:41.1524906Z 
+2025-05-27T17:07:41.1556379Z   laravel/tinker [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-05-27T17:07:41.1562161Z   nesbot/carbon [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-05-27T17:07:41.1567971Z   nunomaduro/termwind [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-05-27T17:07:41.1572994Z   spatie/laravel-ignition [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-05-27T17:07:41.1574994Z 
+2025-05-27T17:07:41.1716608Z 82 packages you are using are looking for funding.
+2025-05-27T17:07:41.1717199Z Use the `composer fund` command to find out more!
+2025-05-27T17:07:41.3442872Z 
+2025-05-27T17:07:41.3443467Z    INFO  Application key set successfully.  
+2025-05-27T17:07:41.3443842Z 
+2025-05-27T17:07:41.5038696Z 
+2025-05-27T17:07:41.5061546Z In Connection.php line 822:
+2025-05-27T17:07:41.5061998Z                                                                                
+2025-05-27T17:07:41.5062631Z   SQLSTATE[HY000] [2002] Connection refused (Connection: mysql, SQL: select e  
+2025-05-27T17:07:41.5063394Z   xists (select 1 from information_schema.tables where table_schema = schema(  
+2025-05-27T17:07:41.5063967Z   ) and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VE  
+2025-05-27T17:07:41.5064513Z   RSIONED')) as `exists`)                                                      
+2025-05-27T17:07:41.5064850Z                                                                                
+2025-05-27T17:07:41.5065075Z 
+2025-05-27T17:07:41.5065181Z In Connector.php line 66:
+2025-05-27T17:07:41.5065413Z                                              
+2025-05-27T17:07:41.5065698Z   SQLSTATE[HY000] [2002] Connection refused  
+2025-05-27T17:07:41.5065967Z                                              
+2025-05-27T17:07:41.5066419Z 
+2025-05-27T17:07:41.5184656Z ##[error]Process completed with exit code 1.
+2025-05-27T17:07:41.5268683Z Post job cleanup.
+2025-05-27T17:07:41.6209738Z [command]/usr/bin/git version
+2025-05-27T17:07:41.6247710Z git version 2.49.0
+2025-05-27T17:07:41.6293112Z Temporarily overriding HOME='/home/runner/work/_temp/53870224-1df8-4487-843e-94c62264e748' before making global git config changes
+2025-05-27T17:07:41.6294394Z Adding repository directory to the temporary git global config as a safe directory
+2025-05-27T17:07:41.6307077Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Single-Sign-On-SSO-laravel-web/Single-Sign-On-SSO-laravel-web
+2025-05-27T17:07:41.6342531Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-05-27T17:07:41.6375962Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-05-27T17:07:41.6624574Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-05-27T17:07:41.6649066Z http.https://github.com/.extraheader
+2025-05-27T17:07:41.6664991Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-05-27T17:07:41.6700017Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-05-27T17:07:41.7097777Z Cleaning up orphan processes

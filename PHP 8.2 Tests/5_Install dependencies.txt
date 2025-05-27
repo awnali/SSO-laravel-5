@@ -1,0 +1,15 @@
+﻿2025-05-27T17:07:36.1208775Z ##[group]Run composer install --prefer-dist --no-progress
+2025-05-27T17:07:36.1209250Z [36;1mcomposer install --prefer-dist --no-progress[0m
+2025-05-27T17:07:36.1407507Z shell: /usr/bin/bash -e {0}
+2025-05-27T17:07:36.1407760Z env:
+2025-05-27T17:07:36.1407935Z   COMPOSER_PROCESS_TIMEOUT: 0
+2025-05-27T17:07:36.1408410Z   COMPOSER_NO_INTERACTION: 1
+2025-05-27T17:07:36.1469345Z   COMPOSER_NO_AUDIT: 1
+2025-05-27T17:07:36.1469676Z ##[endgroup]
+2025-05-27T17:07:36.2867375Z Installing dependencies from lock file (including require-dev)
+2025-05-27T17:07:36.2872312Z Verifying lock file contents can be installed on current platform.
+2025-05-27T17:07:36.2949777Z Warning: The lock file is not up to date with the latest changes in composer.json. You may be getting outdated dependencies. It is recommended that you run `composer update` or `composer update <package name>`.
+2025-05-27T17:07:36.3025544Z Nothing to install, update or remove
+2025-05-27T17:07:36.3051064Z Generating optimized autoload files
+2025-05-27T17:07:36.5690092Z 29 packages you are using are looking for funding.
+2025-05-27T17:07:36.5690847Z Use the `composer fund` command to find out more!

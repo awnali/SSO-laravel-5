@@ -1,0 +1,35 @@
+﻿2025-05-27T17:07:31.2403356Z ##[group]Run shivammathur/setup-php@v2
+2025-05-27T17:07:31.2403793Z with:
+2025-05-27T17:07:31.2404052Z   php-version: 8.2
+2025-05-27T17:07:31.2404548Z   extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+2025-05-27T17:07:31.2405095Z   coverage: none
+2025-05-27T17:07:31.2405359Z   ini-file: production
+2025-05-27T17:07:31.2405641Z ##[endgroup]
+2025-05-27T17:07:31.3152684Z [command]/usr/bin/bash /home/runner/work/_actions/shivammathur/setup-php/v2/src/scripts/run.sh
+2025-05-27T17:07:31.3419172Z 
+2025-05-27T17:07:31.3420298Z [90;1m==> [0m[37;1mSetup PHP[0m
+2025-05-27T17:07:34.9391406Z [32;1m✓ [0m[34;1mPHP [0m[90;1mInstalled PHP 8.2.28[0m
+2025-05-27T17:07:34.9392022Z 
+2025-05-27T17:07:34.9392280Z [90;1m==> [0m[37;1mSetup Extensions[0m
+2025-05-27T17:07:34.9863959Z [32;1m✓ [0m[34;1mmbstring [0m[90;1mEnabled[0m
+2025-05-27T17:07:34.9895131Z [32;1m✓ [0m[34;1mxml [0m[90;1mEnabled[0m
+2025-05-27T17:07:34.9926945Z [32;1m✓ [0m[34;1mctype [0m[90;1mEnabled[0m
+2025-05-27T17:07:34.9959411Z [32;1m✓ [0m[34;1miconv [0m[90;1mEnabled[0m
+2025-05-27T17:07:34.9990266Z [32;1m✓ [0m[34;1mintl [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0007243Z [32;1m✓ [0m[34;1mpdo_sqlite [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0037349Z [32;1m✓ [0m[34;1mdom [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0067866Z [32;1m✓ [0m[34;1mfilter [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0097171Z [32;1m✓ [0m[34;1mgd [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0128408Z [32;1m✓ [0m[34;1miconv [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0157728Z [32;1m✓ [0m[34;1mjson [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0187374Z [32;1m✓ [0m[34;1mmbstring [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0216988Z [32;1m✓ [0m[34;1mpdo [0m[90;1mEnabled[0m
+2025-05-27T17:07:35.0217441Z 
+2025-05-27T17:07:35.0217893Z [90;1m==> [0m[37;1mSetup Tools[0m
+2025-05-27T17:07:35.3540650Z [32;1m✓ [0m[34;1mcomposer [0m[90;1mAdded composer 2.8.9[0m
+2025-05-27T17:07:35.3542471Z 
+2025-05-27T17:07:35.3543439Z [90;1m==> [0m[37;1mSetup Coverage[0m
+2025-05-27T17:07:35.5741393Z [32;1m✓ [0m[34;1mnone [0m[90;1mDisabled Xdebug and PCOV[0m
+2025-05-27T17:07:35.5741901Z 
+2025-05-27T17:07:35.5742151Z [90;1m==> [0m[37;1mSponsor setup-php[0m
+2025-05-27T17:07:35.5742983Z [32;1m✓ [0m[34;1msetup-php [0m[90;1mhttps://setup-php.com/sponsor[0m

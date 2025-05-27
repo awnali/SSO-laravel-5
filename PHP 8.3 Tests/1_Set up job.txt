@@ -1,0 +1,48 @@
+﻿2025-05-27T17:07:29.2105334Z Current runner version: '2.324.0'
+2025-05-27T17:07:29.2141704Z ##[group]Operating System
+2025-05-27T17:07:29.2143048Z Ubuntu
+2025-05-27T17:07:29.2143866Z 24.04.2
+2025-05-27T17:07:29.2144938Z LTS
+2025-05-27T17:07:29.2145789Z ##[endgroup]
+2025-05-27T17:07:29.2146661Z ##[group]Runner Image
+2025-05-27T17:07:29.2147857Z Image: ubuntu-24.04
+2025-05-27T17:07:29.2148748Z Version: 20250511.1.0
+2025-05-27T17:07:29.2150457Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250511.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-05-27T17:07:29.2153138Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250511.1
+2025-05-27T17:07:29.2154911Z ##[endgroup]
+2025-05-27T17:07:29.2155783Z ##[group]Runner Image Provisioner
+2025-05-27T17:07:29.2157027Z 2.0.437.1
+2025-05-27T17:07:29.2157765Z ##[endgroup]
+2025-05-27T17:07:29.2162341Z ##[group]GITHUB_TOKEN Permissions
+2025-05-27T17:07:29.2165441Z Actions: write
+2025-05-27T17:07:29.2166535Z Attestations: write
+2025-05-27T17:07:29.2167660Z Checks: write
+2025-05-27T17:07:29.2168624Z Contents: write
+2025-05-27T17:07:29.2169445Z Deployments: write
+2025-05-27T17:07:29.2170592Z Discussions: write
+2025-05-27T17:07:29.2171491Z Issues: write
+2025-05-27T17:07:29.2172284Z Metadata: read
+2025-05-27T17:07:29.2173280Z Models: read
+2025-05-27T17:07:29.2174340Z Packages: write
+2025-05-27T17:07:29.2175340Z Pages: write
+2025-05-27T17:07:29.2176461Z PullRequests: write
+2025-05-27T17:07:29.2177343Z RepositoryProjects: write
+2025-05-27T17:07:29.2178287Z SecurityEvents: write
+2025-05-27T17:07:29.2179773Z Statuses: write
+2025-05-27T17:07:29.2180989Z ##[endgroup]
+2025-05-27T17:07:29.2184625Z Secret source: Actions
+2025-05-27T17:07:29.2186260Z Prepare workflow directory
+2025-05-27T17:07:29.2671773Z Prepare all required actions
+2025-05-27T17:07:29.2731651Z Getting action download info
+2025-05-27T17:07:29.5151489Z ##[group]Download immutable action package 'actions/checkout@v4'
+2025-05-27T17:07:29.5153705Z Version: 4.2.2
+2025-05-27T17:07:29.5154936Z Digest: sha256:ccb2698953eaebd21c7bf6268a94f9c26518a7e38e27e0b83c1fe1ad049819b1
+2025-05-27T17:07:29.5156140Z Source commit SHA: 11bd71901bbe5b1630ceea73d27597364c9af683
+2025-05-27T17:07:29.5157000Z ##[endgroup]
+2025-05-27T17:07:29.5898709Z Download action repository 'shivammathur/setup-php@v2' (SHA:cf4cade2721270509d5b1c766ab3549210a39a2a)
+2025-05-27T17:07:29.7715302Z ##[group]Download immutable action package 'actions/cache@v3'
+2025-05-27T17:07:29.7716272Z Version: 3.4.3
+2025-05-27T17:07:29.7717034Z Digest: sha256:912f76fb11db1ca09ae23248a39eb86e79ea0f0f6e183d9cb96d0b778eeea4e2
+2025-05-27T17:07:29.7718002Z Source commit SHA: 2f8e54208210a422b2efd51efaa6bd6d7ca8920f
+2025-05-27T17:07:29.7718826Z ##[endgroup]
+2025-05-27T17:07:29.9533313Z Complete job name: PHP 8.3 Tests
