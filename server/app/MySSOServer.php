@@ -8,7 +8,8 @@
 
 namespace App;
 
-
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Jasny\SSO\Server;
 use Jasny\ValidationResult;
 

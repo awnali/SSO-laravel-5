@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\MyServerController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,5 +14,5 @@
 |
 */
 
-Route::get('/server', 'MyServerController@index');
-Route::post('/server', 'MyServerController@index');
+Route::get('/server', [MyServerController::class, 'index']);
+Route::post('/server', [MyServerController::class, 'index']);
