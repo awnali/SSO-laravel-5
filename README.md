@@ -1,4 +1,4 @@
-# Laravel SSO (Single Sign-On) Implementation
+# 🔐 SSO Laravel 12 - Single Sign-On Implementation
 
 A complete Single Sign-On (SSO) implementation using Laravel 12 with one SSO server and multiple broker applications. This allows users to log in once and access all connected applications seamlessly.
 
@@ -9,6 +9,8 @@ A complete Single Sign-On (SSO) implementation using Laravel 12 with one SSO ser
 - **Centralized logout**: Logout from one application logs out from all
 - **Laravel 12 compatible**: Fully updated for the latest Laravel version
 - **Easy setup**: Simple configuration and deployment
+- **Comprehensive testing**: Full test suite with unit, feature, and integration tests
+- **Test automation**: Automated test runner for continuous validation
 
 ## 📋 Requirements
 
@@ -158,7 +160,40 @@ cd broker2
 php artisan serve --host=0.0.0.0 --port=8002
 ```
 
-## 🧪 Testing the SSO Flow
+## 🧪 Testing
+
+### Automated Test Suite
+
+This project includes a comprehensive test suite covering all SSO functionality:
+
+#### Running All Tests
+```bash
+# Run the complete test suite
+./run-tests.sh
+
+# Or run specific test types
+./run-tests.sh unit      # Unit tests only
+./run-tests.sh feature   # Feature tests only
+./run-tests.sh integration # Integration tests only (requires all apps running)
+```
+
+#### Test Coverage
+
+**Unit Tests:**
+- **SSO Server**: Broker validation, authentication, session management, token generation
+- **Broker**: Initialization, configuration, getUserInfo, login functionality
+
+**Feature Tests:**
+- **Server API endpoints**: attach, login, userInfo, logout, multi-broker sessions
+- **Broker authentication**: login/logout flows, auto-login, validation, middleware
+
+**Integration Tests:**
+- **Complete SSO flow**: End-to-end testing across all applications
+- **Reverse flow testing**: Authentication from different brokers
+- **Invalid credentials**: Error handling and security validation
+- **Session isolation**: Multi-broker session management
+
+#### Manual Testing
 
 ### 1. Test Login Flow
 1. Visit `http://localhost:8001/login` (Broker1)
@@ -195,22 +230,34 @@ Each broker uses the `MyBroker` class to communicate with the SSO server. The co
 ## 📁 Project Structure
 
 ```
-SSO-laravel-5/
+SSO-laravel-12/
 ├── server/          # SSO Server application
 │   ├── app/
 │   │   ├── MySSOServer.php
 │   │   └── Http/Controllers/MyServerController.php
+│   ├── tests/
+│   │   ├── Unit/MySSOServerTest.php
+│   │   └── Feature/SSOServerControllerTest.php
 │   └── routes/api.php
 ├── broker1/         # First broker application
 │   ├── app/
 │   │   ├── MyBroker.php
 │   │   └── Http/Controllers/Auth/LoginController.php
+│   ├── tests/
+│   │   ├── Unit/MyBrokerTest.php
+│   │   └── Feature/SSOAuthenticationTest.php
 │   └── routes/web.php
-└── broker2/         # Second broker application
-    ├── app/
-    │   ├── MyBroker.php
-    │   └── Http/Controllers/Auth/LoginController.php
-    └── routes/web.php
+├── broker2/         # Second broker application
+│   ├── app/
+│   │   ├── MyBroker.php
+│   │   └── Http/Controllers/Auth/LoginController.php
+│   ├── tests/
+│   │   ├── Unit/MyBrokerTest.php
+│   │   └── Feature/SSOAuthenticationTest.php
+│   └── routes/web.php
+├── tests/
+│   └── Integration/SSOIntegrationTest.php  # End-to-end tests
+└── run-tests.sh     # Automated test runner
 ```
 
 ## 🔍 How It Works
