@@ -100,7 +100,27 @@ This SSO implementation consists of:
 
 ## 🚀 Quick Start
 
-### 📦 **Installation**
+### 📦 **Two Installation Options**
+
+#### Option 1: Laravel Packages (Recommended for Existing Projects)
+
+Transform your existing Laravel applications into SSO-enabled systems using our Laravel packages:
+
+**For SSO Server:**
+```bash
+composer require awnali/laravel-sso-server
+php artisan sso:setup-server
+```
+
+**For Client Applications:**
+```bash
+composer require awnali/laravel-sso-client
+php artisan sso:setup-client
+```
+
+[📖 **See detailed package documentation below**](#-laravel-packages-integration)
+
+#### Option 2: Complete Project Installation
 
 ```bash
 # Clone the repository
@@ -210,6 +230,553 @@ Run the comprehensive test suite covering all SSO functionality:
 2. **Auto-Login**: Open `http://localhost:8002/home` → Should auto-login
 3. **Centralized Logout**: Logout from either broker → Both should require re-login
 
+## 📦 Laravel Packages Integration
+
+### 🎯 **Why Use Laravel Packages?**
+
+Our Laravel packages make SSO integration **incredibly simple** for existing Laravel applications. Instead of setting up separate applications, you can transform your current Laravel projects into SSO-enabled systems with just a few commands.
+
+**Benefits:**
+- ✅ **Easy Integration**: Add to existing Laravel apps without restructuring
+- ✅ **Composer Management**: Updates and maintenance via Composer
+- ✅ **Laravel Ecosystem**: Full compatibility with Laravel features
+- ✅ **Minimal Configuration**: Sensible defaults with customization options
+- ✅ **Auto-Discovery**: Automatic service provider registration
+
+### 🔧 **Laravel SSO Server Package**
+
+Transform any Laravel application into an SSO authentication server.
+
+#### **Installation**
+
+```bash
+composer require awnali/laravel-sso-server
+php artisan sso:setup-server
+```
+
+#### **What It Does**
+- 📋 Publishes configuration files to `config/sso-server.php`
+- 🗄️ Runs database migrations for broker and session management
+- 🛣️ Registers SSO routes automatically (`/sso/login`, `/sso/logout`, etc.)
+- 🛡️ Adds middleware for SSO protection
+- 🎛️ Provides Artisan commands for broker management
+
+#### **Configuration**
+
+The setup command updates your `.env` file:
+
+```env
+# Laravel SSO Server Configuration
+SSO_SESSION_LIFETIME=3600
+SSO_ROUTES_PREFIX=sso
+SSO_LOGIN_URL=/login
+SSO_CACHE_ENABLED=true
+SSO_VERIFY_SSL=true
+```
+
+#### **Creating Brokers**
+
+```bash
+# Create a new broker application
+php artisan sso:create-broker my-app secret-key https://my-app.com --name="My Application"
+
+# List all brokers
+php artisan sso:list-brokers
+
+# Revoke a broker
+php artisan sso:revoke-broker my-app
+```
+
+#### **Programmatic Broker Management**
+
+```php
+use Awnali\LaravelSsoServer\Models\SsoBroker;
+
+// Create a broker
+$broker = SsoBroker::create([
+    'broker_id' => 'my-app',
+    'broker_secret' => 'secret-key-123',
+    'broker_name' => 'My Application',
+    'broker_url' => 'https://my-app.com',
+    'is_active' => true,
+    'allowed_domains' => ['my-app.com', '*.my-app.com'],
+]);
+
+// Find active brokers
+$activeBrokers = SsoBroker::active()->get();
+
+// Verify broker credentials
+if ($broker->verifySecret($providedSecret)) {
+    // Valid broker
+}
+```
+
+#### **Available Endpoints**
+
+Once installed, these endpoints are automatically available:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/sso/login` | SSO login page |
+| `POST` | `/sso/login` | Process login credentials |
+| `POST` | `/sso/logout` | Logout and invalidate sessions |
+| `GET` | `/sso/attach` | Attach broker to SSO session |
+| `GET` | `/sso/userinfo` | Get authenticated user information |
+| `POST` | `/sso/verify` | Verify SSO token validity |
+
+### 🔗 **Laravel SSO Client Package**
+
+Enable any Laravel application to authenticate via your SSO server.
+
+#### **Installation**
+
+```bash
+composer require awnali/laravel-sso-client
+php artisan sso:setup-client
+```
+
+#### **Configuration**
+
+Add these settings to your `.env` file:
+
+```env
+# Laravel SSO Client Configuration
+SSO_SERVER_URL=https://your-sso-server.com
+SSO_BROKER_ID=your-app-id
+SSO_BROKER_SECRET=your-secret-key
+SSO_AUTO_ATTACH=true
+SSO_CLIENT_ROUTES_PREFIX=auth/sso
+```
+
+#### **User Model Integration**
+
+Add the SSO trait to your User model:
+
+```php
+use Awnali\LaravelSsoClient\Traits\HasSsoAuthentication;
+
+class User extends Authenticatable
+{
+    use HasSsoAuthentication;
+    
+    // Your existing model code...
+    
+    /**
+     * Create user from SSO data (optional customization)
+     */
+    public static function createFromSsoData(array $ssoData): self
+    {
+        return static::create([
+            'name' => $ssoData['fullname'],
+            'email' => $ssoData['email'],
+            'sso_id' => $ssoData['username'],
+            // Add any custom fields
+        ]);
+    }
+}
+```
+
+#### **Route Protection**
+
+Protect your routes with SSO authentication:
+
+```php
+// routes/web.php
+
+// Require SSO authentication
+Route::middleware(['sso.auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::resource('posts', PostController::class);
+});
+
+// Optional SSO (try to authenticate but don't require)
+Route::middleware(['sso.optional'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index']);
+    Route::get('/about', [AboutController::class, 'index']);
+});
+
+// Ensure broker is attached to SSO server
+Route::middleware(['sso.attach'])->group(function () {
+    Route::get('/api/user', function () {
+        return auth()->user();
+    });
+});
+```
+
+#### **Manual Authentication**
+
+For custom authentication flows:
+
+```php
+use Awnali\LaravelSsoClient\Services\SsoClientService;
+
+class AuthController extends Controller
+{
+    public function login(SsoClientService $sso)
+    {
+        // Check if already authenticated via SSO
+        if ($sso->isAttached()) {
+            $userData = $sso->getUserInfo();
+            
+            if ($userData) {
+                // Find or create user
+                $user = User::where('email', $userData['email'])->first();
+                if (!$user) {
+                    $user = User::createFromSsoData($userData);
+                }
+                
+                // Login the user
+                Auth::login($user);
+                
+                return redirect()->intended('/dashboard');
+            }
+        }
+        
+        // Redirect to SSO server for authentication
+        return redirect($sso->getLoginUrl());
+    }
+    
+    public function logout(SsoClientService $sso)
+    {
+        // Logout locally
+        Auth::logout();
+        
+        // Logout from SSO server (affects all brokers)
+        return redirect($sso->getLogoutUrl());
+    }
+}
+```
+
+#### **Testing SSO Connection**
+
+```bash
+# Test connection to SSO server
+php artisan sso:test-connection
+
+# Clear local SSO sessions
+php artisan sso:clear-sessions
+
+# Debug SSO communication
+php artisan sso:debug --verbose
+```
+
+### 🔧 **Advanced Package Configuration**
+
+#### **Custom Authentication Guards**
+
+Register SSO guard in `config/auth.php`:
+
+```php
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+    
+    'sso' => [
+        'driver' => 'sso',
+        'provider' => 'users',
+    ],
+],
+```
+
+Use the SSO guard:
+
+```php
+// In your controller
+if (Auth::guard('sso')->check()) {
+    $user = Auth::guard('sso')->user();
+}
+```
+
+#### **Event Handling**
+
+Listen for SSO events:
+
+```php
+// In EventServiceProvider.php
+use Awnali\LaravelSsoServer\Events\UserLoggedIn;
+use Awnali\LaravelSsoServer\Events\UserLoggedOut;
+use Awnali\LaravelSsoClient\Events\SsoUserAuthenticated;
+
+protected $listen = [
+    UserLoggedIn::class => [
+        'App\Listeners\LogSsoLogin',
+    ],
+    
+    SsoUserAuthenticated::class => [
+        'App\Listeners\HandleSsoAuthentication',
+    ],
+];
+```
+
+```php
+// App\Listeners\LogSsoLogin.php
+class LogSsoLogin
+{
+    public function handle(UserLoggedIn $event)
+    {
+        Log::info('User logged in via SSO', [
+            'user_id' => $event->user->id,
+            'broker_id' => $event->brokerId,
+            'ip_address' => request()->ip(),
+        ]);
+    }
+}
+```
+
+#### **Custom Service Extensions**
+
+Extend the SSO services for custom logic:
+
+```php
+// Server-side customization
+use Awnali\LaravelSsoServer\Services\SsoServerService;
+
+class CustomSsoServerService extends SsoServerService
+{
+    protected function authenticate($username, $password)
+    {
+        // Add custom authentication logic
+        $user = User::where('email', $username)->first();
+        
+        if ($user && $this->validateCustomCriteria($user)) {
+            return parent::authenticate($username, $password);
+        }
+        
+        return ValidationResult::error('Custom validation failed');
+    }
+    
+    private function validateCustomCriteria($user): bool
+    {
+        // Your custom validation logic
+        return $user->is_active && $user->email_verified_at;
+    }
+}
+
+// Register in AppServiceProvider
+public function register()
+{
+    $this->app->singleton('sso-server', CustomSsoServerService::class);
+}
+```
+
+```php
+// Client-side customization
+use Awnali\LaravelSsoClient\Services\SsoClientService;
+
+class CustomSsoClientService extends SsoClientService
+{
+    protected function createUserFromSsoData(array $userData): User
+    {
+        return User::create([
+            'name' => $userData['fullname'],
+            'email' => $userData['email'],
+            'sso_id' => $userData['username'],
+            'department' => $userData['department'] ?? null,
+            'role' => $userData['role'] ?? 'user',
+            'last_sso_login' => now(),
+        ]);
+    }
+}
+```
+
+### 🚀 **Package Usage Examples**
+
+#### **E-commerce Multi-Store Setup**
+
+```php
+// Main store (SSO Server)
+composer require awnali/laravel-sso-server
+php artisan sso:setup-server
+php artisan sso:create-broker store2 secret123 https://store2.example.com
+php artisan sso:create-broker admin secret456 https://admin.example.com
+
+// Store 2 (Client)
+composer require awnali/laravel-sso-client
+# Configure .env with SSO_BROKER_ID=store2
+php artisan sso:setup-client
+
+// Admin Panel (Client)
+composer require awnali/laravel-sso-client
+# Configure .env with SSO_BROKER_ID=admin
+php artisan sso:setup-client
+```
+
+#### **Microservices Architecture**
+
+```php
+// API Gateway (SSO Server)
+composer require awnali/laravel-sso-server
+php artisan sso:create-broker user-service secret1 https://users.api.com
+php artisan sso:create-broker order-service secret2 https://orders.api.com
+php artisan sso:create-broker payment-service secret3 https://payments.api.com
+
+// Each microservice (Client)
+composer require awnali/laravel-sso-client
+# Configure with respective broker credentials
+```
+
+### 🔍 **Package Troubleshooting**
+
+#### **Common Issues & Solutions**
+
+**1. Connection Refused**
+```bash
+# Check SSO server URL and network connectivity
+php artisan sso:test-connection
+```
+
+**2. Invalid Broker Credentials**
+```bash
+# Verify broker configuration
+php artisan sso:list-brokers
+```
+
+**3. Session Issues**
+```php
+// Clear sessions and cache
+php artisan sso:clear-sessions
+php artisan cache:clear
+php artisan session:flush
+```
+
+**4. CORS Issues**
+```php
+// In SSO server config/cors.php
+'allowed_origins' => ['https://broker1.com', 'https://broker2.com'],
+'allowed_headers' => ['*'],
+'allowed_methods' => ['*'],
+```
+
+#### **Debug Mode**
+
+Enable detailed logging:
+
+```env
+SSO_DEBUG=true
+LOG_LEVEL=debug
+```
+
+View SSO logs:
+```bash
+tail -f storage/logs/laravel.log | grep SSO
+```
+
+### 📊 **Package vs Complete Project Comparison**
+
+| Feature | Laravel Packages | Complete Project |
+|---------|------------------|------------------|
+| **Setup Time** | ⚡ 5 minutes | 🕐 15-30 minutes |
+| **Integration** | ✅ Add to existing apps | 🔧 Separate applications |
+| **Maintenance** | 📦 Composer updates | 🛠️ Manual updates |
+| **Customization** | 🎛️ Configuration files | 📝 Direct code editing |
+| **Learning Curve** | 📈 Minimal | 📚 Moderate |
+| **Production Ready** | ✅ Yes | ✅ Yes |
+| **Testing** | 🧪 Package tests | 🧪 Full test suite |
+| **Documentation** | 📖 Package docs | 📚 Complete docs |
+
+### 🎯 **When to Use Each Approach**
+
+#### **Use Laravel Packages When:**
+- ✅ You have existing Laravel applications
+- ✅ You want quick integration with minimal setup
+- ✅ You prefer Composer-managed dependencies
+- ✅ You need to add SSO to multiple existing projects
+- ✅ You want automatic updates and maintenance
+
+#### **Use Complete Project When:**
+- ✅ You're building new applications from scratch
+- ✅ You need full control over the codebase
+- ✅ You want to understand the complete SSO implementation
+- ✅ You need extensive customization beyond configuration
+- ✅ You're learning SSO concepts and implementation
+
+### 🚀 **Getting Started with Packages**
+
+#### **Quick Start for Existing Laravel App**
+
+```bash
+# 1. Install the appropriate package
+composer require awnali/laravel-sso-server  # For SSO server
+# OR
+composer require awnali/laravel-sso-client  # For client app
+
+# 2. Run setup command
+php artisan sso:setup-server  # For server
+# OR
+php artisan sso:setup-client  # For client
+
+# 3. Configure .env file (setup command provides guidance)
+
+# 4. Create brokers (server only)
+php artisan sso:create-broker my-app secret-key https://my-app.com
+
+# 5. Protect routes with middleware
+# Add 'sso.auth' middleware to your routes
+
+# 6. Test the integration
+php artisan sso:test-connection  # For clients
+```
+
+#### **Real-World Implementation Example**
+
+```php
+// Example: Adding SSO to an existing e-commerce Laravel app
+
+// 1. Install client package
+composer require awnali/laravel-sso-client
+
+// 2. Update User model
+class User extends Authenticatable
+{
+    use HasSsoAuthentication;
+    
+    protected $fillable = [
+        'name', 'email', 'password', 'sso_id'
+    ];
+}
+
+// 3. Protect customer routes
+Route::middleware(['sso.auth'])->group(function () {
+    Route::get('/account', [AccountController::class, 'index']);
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/wishlist', [WishlistController::class, 'index']);
+});
+
+// 4. Optional SSO for public pages
+Route::middleware(['sso.optional'])->group(function () {
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/categories', [CategoryController::class, 'index']);
+});
+
+// 5. Custom authentication handling
+class AuthController extends Controller
+{
+    public function login(SsoClientService $sso)
+    {
+        if ($sso->isAttached()) {
+            $userData = $sso->getUserInfo();
+            if ($userData) {
+                $user = User::firstOrCreate(
+                    ['email' => $userData['email']],
+                    [
+                        'name' => $userData['fullname'],
+                        'sso_id' => $userData['username'],
+                    ]
+                );
+                
+                Auth::login($user);
+                return redirect('/account');
+            }
+        }
+        
+        return redirect($sso->getLoginUrl());
+    }
+}
+```
+
 ## 📚 Documentation
 
 ### 📖 **Complete Documentation**
@@ -277,10 +844,10 @@ laravel-sso/
 ## 🌍 SEO & Discoverability
 
 ### 🔍 **Keywords**
-Laravel SSO, Single Sign-On Laravel, Laravel 12 Authentication, PHP SSO, Multi-Application Authentication, Laravel Security, Enterprise SSO, Microservices Authentication, Laravel Session Management, SSO Implementation
+Laravel SSO, Single Sign-On Laravel, Laravel 12 Authentication, PHP SSO, Multi-Application Authentication, Laravel Security, Enterprise SSO, Microservices Authentication, Laravel Session Management, SSO Implementation, Laravel Package, Composer Package, SSO Server Package, SSO Client Package, Laravel Middleware, Authentication Package
 
 ### 🏷️ **Tags**
-`laravel` `sso` `single-sign-on` `authentication` `php` `security` `microservices` `enterprise` `session-management` `api` `oauth` `saml` `identity-management` `access-control` `laravel-12`
+`laravel` `sso` `single-sign-on` `authentication` `php` `security` `microservices` `enterprise` `session-management` `api` `oauth` `saml` `identity-management` `access-control` `laravel-12` `composer-package` `laravel-package` `middleware` `service-provider`
 
 ## 🤝 Contributing
 
@@ -312,6 +879,10 @@ This project is open-sourced software licensed under the [MIT license](LICENSE).
 
 ---
 
-**Ready to implement enterprise-grade SSO?** [Get started now](docs/installation/quick-start.md) and have your multi-application authentication system running in minutes!
+**Ready to implement enterprise-grade SSO?** 
 
-**Keywords**: Laravel 12 SSO, Single Sign-On, PHP Authentication, Enterprise Security, Microservices, Multi-Application Login, Session Management, API Authentication, Laravel Security, SSO Implementation
+🚀 **For Existing Laravel Apps**: `composer require awnali/laravel-sso-server` or `composer require awnali/laravel-sso-client`
+
+📚 **For New Projects**: [Get started now](docs/installation/quick-start.md) and have your multi-application authentication system running in minutes!
+
+**Keywords**: Laravel 12 SSO, Single Sign-On, PHP Authentication, Enterprise Security, Microservices, Multi-Application Login, Session Management, API Authentication, Laravel Security, SSO Implementation, Laravel Package, Composer Package, Authentication Middleware
