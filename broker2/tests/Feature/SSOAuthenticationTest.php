@@ -17,6 +17,11 @@ class SSOAuthenticationTest extends TestCase
     {
         parent::setUp();
         
+        // Set required server variables for SSO broker
+        $_SERVER['HTTP_HOST'] = 'localhost:8002';
+        $_SERVER['REQUEST_URI'] = '/test';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        
         // Create a test user in the local database
         User::create([
             'name' => 'Test User',

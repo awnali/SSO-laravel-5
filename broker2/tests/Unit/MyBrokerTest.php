@@ -17,6 +17,11 @@ class MyBrokerTest extends TestCase
     {
         parent::setUp();
         
+        // Set required server variables for SSO broker
+        $_SERVER['HTTP_HOST'] = 'localhost:8002';
+        $_SERVER['REQUEST_URI'] = '/test';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        
         // Mock HTTP responses for SSO server
         Http::fake([
             'localhost:8000/api/server*' => Http::response(['success' => true], 200),
