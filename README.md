@@ -1,276 +1,263 @@
-# SSO-laravel-5
+# Laravel SSO (Single Sign-On) Implementation
 
-This tutorial work for laravel 5.x but i'm following 5.4 here. 
+A complete Single Sign-On (SSO) implementation using Laravel 12 with one SSO server and multiple broker applications. This allows users to log in once and access all connected applications seamlessly.
 
-lets first setup SSO server
+## 🚀 Features
 
-## Server
+- **Single Sign-On**: Log in once, access all applications
+- **Auto-login**: Automatic authentication across broker applications
+- **Centralized logout**: Logout from one application logs out from all
+- **Laravel 12 compatible**: Fully updated for the latest Laravel version
+- **Easy setup**: Simple configuration and deployment
 
-Create new laravel project
+## 📋 Requirements
 
-You can install from composer or use laravel installer
-```sh
-$ laravel new server
-```
-Make sure laravel project is working. 
+- PHP ^8.2
+- Laravel ^12.0
+- Composer
+- SQLite (or MySQL/PostgreSQL)
 
-You might need to create new app key for your laravel project,
+## 🏗️ Architecture
 
-```sh
-$ php artisan key:generate
-```
-
-Install [sso package](https://github.com/jasny/sso) from composer:
-
-```sh
-$ composer require jasny/sso
-```
-Copy the MySSOServer class from repo. This is simple a service class, which you can paste anywhere in your laravel project.
-
-*make sure your server is connected to DB and you run migration successfully.*
-
-Create new Server Controller (you can do this stuff even in route file):
-
-```sh
-$ php artisan make:controller MyServerController
-```
-
-Replace newly creted HomeController, with following code:
-```
-
-<?php
-
-namespace App\Http\Controllers;
-
-use App\MySSOServer;
-
-class MyServerController extends Controller
-{
-    public function index(MySSOServer $ssoServer){
-        $command = isset($_REQUEST['command']) ? $_REQUEST['command'] : null;
-        if (!$command || !method_exists($ssoServer, $command)) {
-            header("HTTP/1.1 404 Not Found");
-            header('Content-type: application/json; charset=UTF-8');
-
-            echo json_encode(['error' => 'Unknown command']);
-            exit();
-        }
-        $user = $ssoServer->$command();
-        if($user)
-            return response()->json($user);
-    }
-}
+This SSO implementation consists of:
+- **1 SSO Server**: Handles authentication and user management
+- **Multiple Brokers**: Applications that delegate authentication to the SSO server
 
 ```
-
-Add route to your route file:
-
-    Route::get('/', 'MyServerController@index');
-    Route::post('/', 'MyServerController@index');
-
-*yes you need both,GET & POST*
-
-try to hit above url from browser, you should get following response,
-
->     {
->         error: "Unknown command"
->     }
-If you didn't see above response, it means you did some mistake above.
-
-Your server is ready :) 
-
-lets jump to client now.
-
-## Client
-
-Create new laravel project
-
-```sh
-$ laravel new client1
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Broker1   │    │ SSO Server  │    │   Broker2   │
+│             │◄──►│             │◄──►│             │
+│ (Port 8001) │    │ (Port 8000) │    │ (Port 8002) │
+└─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-*Make sure your client laravel project is working*.
+## 🛠️ Quick Start
 
-Install [sso package](https://github.com/jasny/sso) from composer:
-```sh
-$ composer require jasny/sso
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/awnali/SSO-laravel-5.git
+cd SSO-laravel-5
 ```
-its time to create your client authentication, you can choose any type of authentication by i will stay with laravel authentication scaffolding, which you can generate by following artisan command:
-```ssh
-$ php artisan make:auth 
-$ php artisan migrate
+
+### 2. Install Dependencies
+
+Install dependencies for all applications:
+
+```bash
+# Server
+cd server
+composer install
+cp .env.example .env
+php artisan key:generate
+
+# Broker1
+cd ../broker1
+composer install
+cp .env.example .env
+php artisan key:generate
+
+# Broker2
+cd ../broker2
+composer install
+cp .env.example .env
+php artisan key:generate
 ```
-*now you should have login/registration scaffolding along with HomeController.*
 
-Create MyBroker.php file and paste following code:
+### 3. Configure Environment
 
-    <?php
+#### SSO Server (.env)
+```env
+APP_NAME="SSO Server"
+APP_URL=http://localhost:8000
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/server/database/database.sqlite
+```
 
-	namespace App;
+#### Broker1 (.env)
+```env
+APP_NAME="Broker1"
+APP_URL=http://localhost:8001
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/broker1/database/database.sqlite
 
+# SSO Configuration
+SSO_SERVER_URL=http://localhost:8000/api/server
+SSO_BROKER_ID=broker1
+SSO_BROKER_SECRET=broker1_secret
+```
 
-	use Illuminate\Support\Facades\Auth;
-	use Jasny\SSO\Broker;
-	use Jasny\SSO\Exception;
-	use Jasny\SSO\NotAttachedException;
+#### Broker2 (.env)
+```env
+APP_NAME="Broker2"
+APP_URL=http://localhost:8002
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/broker2/database/database.sqlite
 
-	class MyBroker extends Broker
-	{
-    public function __construct()
-    {
-		        parent::__construct(env('SSO_SERVER_URL'),env('SSO_CLIENT_ID'),env("SSO_CLIENT_SECRET"));
-        $this->attach(true);
-    }
+# SSO Configuration
+SSO_SERVER_URL=http://localhost:8000/api/server
+SSO_BROKER_ID=broker2
+SSO_BROKER_SECRET=broker2_secret
+```
 
-    protected function request($method, $command, $data = null)
-    {
-        if (!$this->isAttached()) {
-            throw new NotAttachedException('No token');
-        }
-        $url = $this->getRequestUrl($command, !$data || $method === 'POST' ? [] : $data);
+### 4. Setup Databases
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json', 'Authorization: Bearer '. $this->getSessionID()]);
+Create SQLite databases and run migrations:
 
-        if ($method === 'POST' && !empty($data)) {
-            $post = is_string($data) ? $data : http_build_query($data);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-        }
+```bash
+# Server
+cd server
+touch database/database.sqlite
+php artisan migrate
 
-        $response = curl_exec($ch);
-        if (curl_errno($ch) != 0) {
-            $message = 'Server request failed: ' . curl_error($ch);
-            throw new Exception($message);
-        }
+# Broker1
+cd ../broker1
+touch database/database.sqlite
+php artisan migrate
 
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        list($contentType) = explode(';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-        
+# Broker2
+cd ../broker2
+touch database/database.sqlite
+php artisan migrate
+```
 
-        $data = json_decode($response, true);
-        if ($httpCode == 403) {
-            $this->clearToken();
-            throw new NotAttachedException($data['error'] ?: $response, $httpCode);
-        }
-        if ($httpCode >= 400) throw new Exception($data['error'] ?: $response, $httpCode);
+### 5. Create Test User
 
-        return $data;
-    }
-    protected function loginUser($username, $password){
-        try{
-            $this->login($username, $password);
-        }
-        catch(NotAttachedException $e){
-            return false;
-        }
-        catch(Exception $e){
-            return false;
-        }
-        return true;
-    }
-    public function loginCurrentUser($returnUrl = '/home'){
-        if($user = $this->getUserInfo()){
-            Auth::loginUsingId($user['id']);
-            return redirect($returnUrl);
-        }
-     }
-    }
-    
-    
-Don't forget to add your server and broker credentials in .ev file:
+Add a test user to the SSO server:
 
-> SSO_SERVER_URL=http://localhost/server/public/ 
+```bash
+cd server
+php artisan tinker
+```
 
-> SSO_CLIENT_ID=12345
+```php
+use App\Models\User;
+User::create([
+    'name' => 'Test User',
+    'email' => 'test@example.com',
+    'password' => bcrypt('password')
+]);
+exit
+```
 
-> SSO_CLIENT_SECRET=abc123
+### 6. Start Applications
 
-At this point either you can remove the laravel authentication and use authentication based on response of our server or you can continue to use laravel auth and use SSO both. i will use the second method where i won't touch laravel authentication rather will add new methods to it.
+Start all three applications in separate terminals:
 
-So let customize laravel login first, copy paste following method into your LoginController:
+```bash
+# Terminal 1 - SSO Server
+cd server
+php artisan serve --host=0.0.0.0 --port=8000
 
-    public function login(Request $request, MyBroker $myBroker)
-    {
-        $this->validateLogin($request);
+# Terminal 2 - Broker1
+cd broker1
+php artisan serve --host=0.0.0.0 --port=8001
 
-        //Login on SSO SERVER
-        if($myBroker->loginUser($request->get('email'),$request->get('password'))){
-            // If the class is using the ThrottlesLogins trait, we can automatically throttle
-            // the login attempts for this application. We'll key this by the username and
-            // the IP address of the client making these requests into this application.
-            if ($this->hasTooManyLoginAttempts($request)) {
-                $this->fireLockoutEvent($request);
+# Terminal 3 - Broker2
+cd broker2
+php artisan serve --host=0.0.0.0 --port=8002
+```
 
-                return $this->sendLockoutResponse($request);
-            }
+## 🧪 Testing the SSO Flow
 
-            if ($this->attemptLogin($request)) {
-                return $this->sendLoginResponse($request);
-            }
-        }
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
-        // user surpasses their maximum number of attempts they will get locked out.
-        $this->incrementLoginAttempts($request);
+### 1. Test Login Flow
+1. Visit `http://localhost:8001/login` (Broker1)
+2. Login with: `test@example.com` / `password`
+3. You should be redirected to the dashboard
 
-        return $this->sendFailedLoginResponse($request);
-    }
+### 2. Test Auto-Login
+1. Open a new tab and visit `http://localhost:8002/home` (Broker2)
+2. You should be automatically logged in without entering credentials
+3. The same user should appear in the navigation
 
-*You login/register should still work fine even after this code.*
+### 3. Test Logout
+1. Logout from either Broker1 or Broker2
+2. Try accessing `http://localhost:8001/home` or `http://localhost:8002/home`
+3. You should be redirected to login on both applications
 
-by using following line, you have successfully created shared session using SSO. Now we'll create another Client to test everything.
+## 🔧 Configuration Details
 
-## Client2
+### SSO Server Configuration
 
-Just repeat the steps what we did before for client1.
-don't forget to replace CLIENT_ID and CLIENT_SECRET in .env file
+The SSO server is configured in `server/app/MySSOServer.php` with broker credentials:
 
-##SSO between client1 & client2
+```php
+protected $brokers = [
+    'broker1' => ['secret' => 'broker1_secret'],
+    'broker2' => ['secret' => 'broker2_secret'],
+];
+```
 
- Do every step for all your clients, i.e. client1 & client2
+### Broker Configuration
 
- **1. Redirect after login**
+Each broker uses the `MyBroker` class to communicate with the SSO server. The configuration is loaded from environment variables.
 
+## 📁 Project Structure
 
-Now we will implement functionality that if you're loggedIn in one of client it should ask you to signIn when you go to login page of other client. 
+```
+SSO-laravel-5/
+├── server/          # SSO Server application
+│   ├── app/
+│   │   ├── MySSOServer.php
+│   │   └── Http/Controllers/MyServerController.php
+│   └── routes/api.php
+├── broker1/         # First broker application
+│   ├── app/
+│   │   ├── MyBroker.php
+│   │   └── Http/Controllers/Auth/LoginController.php
+│   └── routes/web.php
+└── broker2/         # Second broker application
+    ├── app/
+    │   ├── MyBroker.php
+    │   └── Http/Controllers/Auth/LoginController.php
+    └── routes/web.php
+```
 
-*Your client and Server should be connected to same DB for authentication*
+## 🔍 How It Works
 
-paste following code in your laravel Exception handler method:
+1. **Broker Attachment**: When a user visits a broker, it attaches to the SSO server using a unique session token
+2. **Authentication**: Login credentials are sent to the SSO server for validation
+3. **Session Sharing**: The SSO server creates a shared session that all brokers can access
+4. **Auto-Login**: When visiting other brokers, they check with the SSO server for existing authentication
+5. **Centralized Logout**: Logout requests are sent to the SSO server, invalidating the shared session
 
-    $broker = new MyBroker();
-    $broker->loginCurrentUser();
-    
-So now if you are loggedIn in client one and come to home of client2, it will auto login, whoever is loggedIn in client1
+## 🐛 Troubleshooting
 
-Do the same step for client1, so that if you are loggedIn in client2 and comes to client1 home page, it should auto login.
+### Common Issues
 
-**2. Redirect from Middleware**
-now we'll redirect to home page if you're loggedIn user visits login and registration pages.
-Paste following code in RedirectIfAuthenticated middleware:
+1. **CSRF Token Errors**: SSO endpoints are in `routes/api.php` to bypass CSRF protection
+2. **Database Connection**: Ensure SQLite files exist and have proper permissions
+3. **Port Conflicts**: Make sure ports 8000, 8001, and 8002 are available
+4. **Environment Variables**: Double-check SSO configuration in `.env` files
 
-    $broker  =new MyBroker();
-    $broker->loginCurrentUser();
+### Debug Mode
 
-**3. Logout**
+Enable debug logging in `MyBroker.php` by uncommenting the debug lines to see detailed request/response information.
 
-if you are logout from one of client, it means you're logged out from all clients. 
+## 📝 Adding More Brokers
 
-copy the following function and paste in LoginController: 
+To add additional broker applications:
 
-    public function logout(Request $request)
-    {
-        $broker  =new MyBroker();
-        $broker->logout();
-        $this->guard()->logout();
+1. Create a new Laravel application
+2. Install the jasny/sso package: `composer require jasny/sso:^0.2.3`
+3. Copy the `MyBroker.php` and `LoginController.php` from an existing broker
+4. Add the new broker to the SSO server's broker list
+5. Configure the `.env` file with unique broker ID and secret
 
-        $request->session()->flush();
+## 🤝 Contributing
 
-        $request->session()->regenerate();
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-        return redirect('/');
-    }
+## 📄 License
 
-Now test everything and your SSO Server along with 2 clients are ready :)
+This project is open-sourced software licensed under the [MIT license](LICENSE).
+
+## 🙏 Acknowledgments
+
+- Built with [Laravel](https://laravel.com/)
+- Uses [jasny/sso](https://github.com/jasny/sso) package for SSO functionality
+- Upgraded to Laravel 12 for modern PHP compatibility
