@@ -33,6 +33,12 @@ class MyBroker extends Broker
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json', 'Authorization: Bearer '. $this->getSessionID()]);
+        
+        // Security: Enable SSL verification
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 
         if ($method === 'POST' && !empty($data)) {
             $post = is_string($data) ? $data : http_build_query($data);
@@ -47,6 +53,14 @@ class MyBroker extends Broker
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         list($contentType) = explode(';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
+
+        // Only log essential information for security
+        \Log::info('SSO Request', [
+            'method' => $method,
+            'command' => $command,
+            'httpCode' => $httpCode,
+            'success' => $httpCode < 400
+        ]);
 
 
         $data = json_decode($response, true);
@@ -64,12 +78,31 @@ class MyBroker extends Broker
             $this->login($username, $password);
         }
         catch(NotAttachedException $e){
+            \Log::error('SSO NotAttachedException: ' . $e->getMessage());
             return false;
         }
         catch(Exception $e){
+            \Log::error('SSO Exception: ' . $e->getMessage());
             return false;
         }
         return true;
+    }
+    
+    public function getUserInfo()
+    {
+        try {
+            $result = parent::getUserInfo();
+            if ($result) {
+                \Log::info('User info retrieved successfully');
+            }
+            return $result;
+        } catch (NotAttachedException $e) {
+            \Log::error('getUserInfo NotAttachedException: ' . $e->getMessage());
+            return null;
+        } catch (Exception $e) {
+            \Log::error('getUserInfo Exception: ' . $e->getMessage());
+            return null;
+        }
     }
     public function loginCurrentUser($returnUrl = '/home')
     {

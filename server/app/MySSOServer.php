@@ -17,23 +17,33 @@ class MySSOServer extends Server
 {
 
     /**
-     * Registered brokers
-     * @var array
+     * Get registered brokers from environment configuration
+     * @return array
      */
-    private static $brokers = [
-        'broker1' => ['secret'=>'broker1_secret'],
-        'broker2' => ['secret'=>'broker2_secret']
-    ];
+    private function getBrokers()
+    {
+        return [
+            'broker1' => ['secret' => env('SSO_BROKER1_SECRET')],
+            'broker2' => ['secret' => env('SSO_BROKER2_SECRET')]
+        ];
+    }
 
     /**
      * Get the API secret of a broker and other info
      *
      * @param string $brokerId
-     * @return array
+     * @return array|null
      */
     protected function getBrokerInfo($brokerId)
     {
-        return isset(self::$brokers[$brokerId]) ? self::$brokers[$brokerId] : null;
+        // Validate broker ID to prevent injection attacks
+        if (!is_string($brokerId) || !preg_match('/^[a-zA-Z0-9_-]+$/', $brokerId)) {
+            \Log::warning('Invalid broker ID attempted', ['broker_id' => $brokerId]);
+            return null;
+        }
+        
+        $brokers = $this->getBrokers();
+        return isset($brokers[$brokerId]) ? $brokers[$brokerId] : null;
     }
 
     /**
@@ -45,40 +55,116 @@ class MySSOServer extends Server
      */
     protected function authenticate($username, $password)
     {
-        \Log::info('authenticate called', ['username' => $username, 'password' => '***']);
+        // Input validation
+        if (empty($username) || empty($password)) {
+            \Log::warning('Authentication attempt with missing credentials', [
+                'ip' => request()->ip(),
+                'user_agent' => request()->userAgent()
+            ]);
+            return ValidationResult::error("Invalid credentials");
+        }
+
+        // Validate email format
+        if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
+            \Log::warning('Authentication attempt with invalid email format', [
+                'ip' => request()->ip()
+            ]);
+            return ValidationResult::error("Invalid credentials");
+        }
+
+        // Rate limiting check (basic implementation)
+        $cacheKey = 'auth_attempts_' . request()->ip();
+        $attempts = \Cache::get($cacheKey, 0);
         
-        if (!isset($username)) {
-            return ValidationResult::error("username isn't set");
+        if ($attempts >= 5) {
+            \Log::warning('Authentication rate limit exceeded', [
+                'ip' => request()->ip(),
+                'attempts' => $attempts
+            ]);
+            return ValidationResult::error("Too many attempts. Please try again later.");
         }
 
-        if (!isset($password)) {
-            return ValidationResult::error("password isn't set");
-        }
-
-        if(Auth::attempt(['email' => $username, 'password' => $password])){
-            \Log::info('authenticate success', ['username' => $username]);
+        if (Auth::attempt(['email' => $username, 'password' => $password])) {
+            // Clear failed attempts on successful login
+            \Cache::forget($cacheKey);
+            
+            \Log::info('Authentication successful', [
+                'ip' => request()->ip(),
+                'user_id' => Auth::id()
+            ]);
             return ValidationResult::success();
         }
-        \Log::info('authenticate failed', ['username' => $username]);
-        return ValidationResult::error("can't find user");
-
+        
+        // Increment failed attempts
+        \Cache::put($cacheKey, $attempts + 1, now()->addMinutes(15));
+        
+        \Log::warning('Authentication failed', [
+            'ip' => request()->ip(),
+            'attempts' => $attempts + 1
+        ]);
+        
+        return ValidationResult::error("Invalid credentials");
     }
 
 
     /**
      * Get the user information
      *
-     * @return array
+     * @param string $username
+     * @return array|null
      */
     protected function getUserInfo($username)
     {
-        \Log::info('getUserInfo called', ['username' => $username]);
-        $user = User::where('email',$username)->first();
-        \Log::info('getUserInfo user found', ['user' => $user ? $user->toArray() : null]);
+        if (empty($username) || !filter_var($username, FILTER_VALIDATE_EMAIL)) {
+            \Log::warning('Invalid username in getUserInfo', ['ip' => request()->ip()]);
+            return null;
+        }
 
-        return $user ? $user->toArray() : null;
+        $user = User::where('email', $username)->first();
+        
+        if ($user) {
+            \Log::info('User info retrieved', [
+                'user_id' => $user->id,
+                'ip' => request()->ip()
+            ]);
+            
+            // Return only safe user information
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at
+            ];
+        }
+
+        return null;
     }
-    public function getUserById($id){
-        return User::findOrFail($id);
+
+    /**
+     * Get user by ID with proper validation
+     *
+     * @param int $id
+     * @return User|null
+     */
+    public function getUserById($id)
+    {
+        if (!is_numeric($id) || $id <= 0) {
+            \Log::warning('Invalid user ID in getUserById', [
+                'id' => $id,
+                'ip' => request()->ip()
+            ]);
+            return null;
+        }
+
+        try {
+            return User::findOrFail($id);
+        } catch (\Exception $e) {
+            \Log::warning('User not found in getUserById', [
+                'id' => $id,
+                'ip' => request()->ip()
+            ]);
+            return null;
+        }
     }
 }

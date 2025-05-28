@@ -33,6 +33,12 @@ class MyBroker extends Broker
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json', 'Authorization: Bearer '. $this->getSessionID()]);
+        
+        // Security: Enable SSL verification
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 
         if ($method === 'POST' && !empty($data)) {
             $post = is_string($data) ? $data : http_build_query($data);
@@ -48,13 +54,12 @@ class MyBroker extends Broker
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         list($contentType) = explode(';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
 
-        \Log::info('SSO Request Debug', [
-            'url' => $url,
+        // Only log essential information for security
+        \Log::info('SSO Request', [
             'method' => $method,
             'command' => $command,
             'httpCode' => $httpCode,
-            'response' => $response,
-            'contentType' => $contentType
+            'success' => $httpCode < 400
         ]);
 
         $data = json_decode($response, true);
@@ -85,7 +90,9 @@ class MyBroker extends Broker
     {
         try {
             $result = parent::getUserInfo();
-            \Log::info('getUserInfo result', ['result' => $result]);
+            if ($result) {
+                \Log::info('User info retrieved successfully');
+            }
             return $result;
         } catch (NotAttachedException $e) {
             \Log::error('getUserInfo NotAttachedException: ' . $e->getMessage());

@@ -60,16 +60,14 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
 
-        \Log::info('Login attempt', ['email' => $request->get('email')]);
+        \Log::info('Login attempt', ['ip' => $request->ip()]);
 
         //Login on SSO SERVER
         $loginResult = $myBroker->loginUser($request->get('email'),$request->get('password'));
-        \Log::info('SSO login result', ['result' => $loginResult]);
         
         if($loginResult){
             // Get user info from SSO server and login locally
             $user = $myBroker->getUserInfo();
-            \Log::info('SSO user info', ['user' => $user]);
             
             if ($user) {
                 // Create or find local user based on SSO user info
