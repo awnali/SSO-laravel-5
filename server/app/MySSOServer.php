@@ -142,15 +142,35 @@ class MySSOServer extends Server
     }
 
     /**
-     * Get user by ID with proper validation
+     * Get user by ID - maintains original behavior for backward compatibility
      *
      * @param int $id
-     * @return User|null
+     * @return User
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getUserById($id)
     {
         if (!is_numeric($id) || $id <= 0) {
             \Log::warning('Invalid user ID in getUserById', [
+                'id' => $id,
+                'ip' => request()->ip()
+            ]);
+            throw new \Illuminate\Database\Eloquent\ModelNotFoundException('User not found');
+        }
+
+        return User::findOrFail($id);
+    }
+
+    /**
+     * Get user by ID with secure error handling (returns null instead of throwing)
+     *
+     * @param int $id
+     * @return User|null
+     */
+    public function getUserByIdSecure($id)
+    {
+        if (!is_numeric($id) || $id <= 0) {
+            \Log::warning('Invalid user ID in getUserByIdSecure', [
                 'id' => $id,
                 'ip' => request()->ip()
             ]);
@@ -160,7 +180,7 @@ class MySSOServer extends Server
         try {
             return User::findOrFail($id);
         } catch (\Exception $e) {
-            \Log::warning('User not found in getUserById', [
+            \Log::warning('User not found in getUserByIdSecure', [
                 'id' => $id,
                 'ip' => request()->ip()
             ]);

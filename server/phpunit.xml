@@ -27,5 +27,8 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <!-- SSO Test Configuration -->
+        <env name="SSO_BROKER1_SECRET" value="broker1_secret"/>
+        <env name="SSO_BROKER2_SECRET" value="broker2_secret"/>
     </php>
 </phpunit>
